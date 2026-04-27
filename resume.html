@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Resume — Ryan Nguitui · Beyond Canvas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .resume-page {
+            max-width: 860px;
+            margin-inline: auto;
+            padding-inline: var(--pad-x);
+            padding-block: calc(var(--nav-h) + 80px) 120px;
+        }
+
+        .resume-header {
+            padding-bottom: 56px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 64px;
+        }
+
+        .resume-name {
+            font-family: var(--font-display);
+            font-style: italic;
+            font-size: clamp(52px, 7vw, 88px);
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            line-height: 0.95;
+            margin-bottom: 20px;
+        }
+
+        .resume-handle {
+            font-family: var(--font-sans);
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--text3);
+            margin-bottom: 6px;
+        }
+
+        .resume-role {
+            font-family: var(--font-sans);
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: var(--text2);
+            margin-bottom: 24px;
+        }
+
+        .resume-contact {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .resume-contact a {
+            font-family: var(--font-sans);
+            font-size: 13px;
+            color: var(--text2);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 2px;
+            transition: color .2s, border-color .2s;
+        }
+
+        .resume-contact a:hover {
+            color: var(--text);
+            border-color: rgba(255, 255, 255, .35);
+        }
+
+        .r-section {
+            margin-bottom: 64px;
+        }
+
+        .r-section-title {
+            font-family: var(--font-sans);
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: var(--text3);
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .r-section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .r-item {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 40px;
+            padding-block: 28px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .r-item:last-child {
+            border-bottom: none;
+        }
+
+        .r-date {
+            font-family: var(--font-sans);
+            font-size: 12px;
+            color: var(--text3);
+            letter-spacing: .04em;
+            margin-bottom: 6px;
+        }
+
+        .r-company {
+            font-family: var(--font-sans);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: var(--text2);
+        }
+
+        .r-title {
+            font-family: var(--font-display);
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 10px;
+        }
+
+        .r-desc {
+            font-family: var(--font-sans);
+            font-size: 14px;
+            line-height: 1.78;
+            color: var(--text2);
+        }
+
+        /* Recognition badges */
+        .badge-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .badge {
+            font-family: var(--font-sans);
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .65);
+            border: 1px solid rgba(255, 255, 255, .18);
+            background: rgba(255, 255, 255, .06);
+            padding: 5px 12px;
+            border-radius: 999px;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .skill-pill {
+            font-family: var(--font-sans);
+            padding: 10px 16px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text2);
+            text-align: center;
+            transition: border-color .2s, color .2s;
+        }
+
+        .skill-pill:hover {
+            border-color: var(--border2);
+            color: var(--text);
+        }
+
+        .toolkit-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 4px;
+        }
+
+        .toolkit-item {
+            font-family: var(--font-sans);
+            font-size: 13px;
+            color: var(--text2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toolkit-item::before {
+            content: '—';
+            color: var(--text3);
+            flex-shrink: 0;
+        }
+
+        .resume-cta {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding-top: 48px;
+            border-top: 1px solid var(--border);
+            margin-top: 64px;
+        }
+
+        @media (max-width: 640px) {
+            .r-item {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .skills-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .toolkit-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .resume-cta {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="magnetic-cursor" id="magnetic-cursor" aria-hidden="true"></div>
+
+    <!-- NAV -->
+    <header class="nav scrolled" id="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo" data-magnetic>Ryan Nguitui</a>
+            <nav class="nav-links">
+                <a href="index.html#work" class="nav-link">Work</a>
+                <a href="index.html#about" class="nav-link">About</a>
+                <a href="index.html#contact" class="nav-link">Contact</a>
+                <a href="resume.html" class="nav-link active">Resume</a>
+            </nav>
+            <span class="nav-year">®2026</span>
+            <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">
+                <span></span><span></span>
+            </button>
+        </div>
+        <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+            <a href="index.html#work" class="m-link">Work</a>
+            <a href="index.html#about" class="m-link">About</a>
+            <a href="index.html#contact" class="m-link">Contact</a>
+            <a href="resume.html" class="m-link">Resume</a>
+        </div>
+    </header>
+
+    <!-- RESUME CONTENT -->
+    <main class="resume-page">
+
+        <header class="resume-header fade-up">
+            <p class="resume-handle">Beyond Canvas · @beyond.canvas.ke</p>
+            <h1 class="resume-name">Ryan Nguitui</h1>
+            <p class="resume-role">Graphic Designer &amp; Web Designer — Nairobi, Kenya</p>
+            <div class="resume-contact">
+                <a href="mailto:nguitui.kamau@gmail.com">nguitui.kamau@gmail.com</a>
+                <a href="https://instagram.com/beyond.canvas.ke" target="_blank" rel="noopener">@beyond.canvas.ke</a>
+                <a href="https://www.linkedin.com/in/ryan-nguitui/" target="_blank" rel="noopener">LinkedIn</a>
+            </div>
+        </header>
+
+        <!-- Experience -->
+        <section class="r-section fade-up">
+            <p class="r-section-title">Experience</p>
+
+            <div class="r-item">
+                <div class="r-item-meta">
+                    <p class="r-date">2024 – Present</p>
+                    <p class="r-company">Beyond Canvas</p>
+                </div>
+                <div class="r-item-body">
+                    <h2 class="r-title">Graphic &amp; Web Designer (Founder)</h2>
+                    <p class="r-desc">Independent design practice working across brand identity, web design, social
+                        media creative, and large-format event graphics for Kenyan brands and ventures. Active client
+                        roster includes Modern Cushions, Zalika Africa, and others. Operating under the Instagram brand
+                        <em>@beyond.canvas.ke</em>.</p>
+                </div>
+            </div>
+
+            <div class="r-item">
+                <div class="r-item-meta">
+                    <p class="r-date">2024 – Present</p>
+                    <p class="r-company">Modern Cushions</p>
+                </div>
+                <div class="r-item-body">
+                    <h2 class="r-title">Graphic Designer &amp; Social Media Manager</h2>
+                    <p class="r-desc">Luxury automotive seating brand. Responsible for all creative output: holiday and
+                        seasonal posters, social media content, large-format event banners (tear-drops, 5m event
+                        banners), fliers, business cards, seat design graphics, and complete website design.</p>
+                </div>
+            </div>
+
+            <div class="r-item">
+                <div class="r-item-meta">
+                    <p class="r-date">2024 – Present</p>
+                    <p class="r-company">Zalika Africa</p>
+                </div>
+                <div class="r-item-body">
+                    <h2 class="r-title">Web Designer &amp; Graphic Designer</h2>
+                    <p class="r-desc">Caregiver training school. Full brand and digital build: logo design, roll-up
+                        banners, tear-drop banners, 3m event banners, business cards, fliers, posters, website design,
+                        and a custom school management system.</p>
+                </div>
+            </div>
+
+            <div class="r-item">
+                <div class="r-item-meta">
+                    <p class="r-date">2024 – Present</p>
+                    <p class="r-company">Angawatch</p>
+                </div>
+                <div class="r-item-body">
+                    <h2 class="r-title">Co-founder &amp; Design Lead</h2>
+                    <p class="r-desc">Climate-tech venture building a flood early-warning system and cognitive community
+                        platform. Lead all visual identity, web design, pitch deck, and presentation design. </p>
+                    <div class="badge-row">
+                        <span class="badge">Red Bull Basement Kenya — Top 15 / 3,800+ entrants</span>
+                        <span class="badge">ICASSP International — Top 5 Startup</span>
+                        <span class="badge">IEEE Climate Hackathon — Award Winner</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="r-item">
+                <div class="r-item-meta">
+                    <p class="r-date">2024 – 2025</p>
+                    <p class="r-company">DuniApp</p>
+                </div>
+                <div class="r-item-body">
+                    <h2 class="r-title">Co-founder</h2>
+                    <p class="r-desc">Mentorship venture guiding Kenyan students through the US university Common App
+                        admissions process. Led all branding work, plus recording and editing all TikTok video content
+                        for the platform's social presence.</p>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Selected Engagements -->
+        <section class="r-section fade-up">
+            <p class="r-section-title">Selected Engagements</p>
+
+            <div class="r-item">
+                <div class="r-item-meta">
+                    <p class="r-date">2024</p>
+                    <p class="r-company">Strathmore SCESA</p>
+                </div>
+                <div class="r-item-body">
+                    <h2 class="r-title">Graphic Designer &amp; Videographer</h2>
+                    <p class="r-desc">Strathmore Computing &amp; Engineering Students Association. Event posters,
+                        on-the-ground content recording at campus events, and video editing.</p>
+                </div>
+            </div>
+
+            <div class="r-item">
+                <div class="r-item-meta">
+                    <p class="r-date">2024</p>
+                    <p class="r-company">Strathmore Presidential Subcommittee</p>
+                </div>
+                <div class="r-item-body">
+                    <h2 class="r-title">Graphic Designer &amp; Videographer</h2>
+                    <p class="r-desc">University leadership body. Christmas and New Year seasonal posters, plus video
+                        recording for committee events.</p>
+                </div>
+            </div>
+
+            <div class="r-item">
+                <div class="r-item-meta">
+                    <p class="r-date">2024</p>
+                    <p class="r-company">Yakoyo Restaurant</p>
+                </div>
+                <div class="r-item-body">
+                    <h2 class="r-title">Graphic Designer</h2>
+                    <p class="r-desc">Promotional creative — family feast offer poster series for the restaurant.</p>
+                </div>
+            </div>
+
+            <div class="r-item">
+                <div class="r-item-meta">
+                    <p class="r-date">2024</p>
+                    <p class="r-company">Wealth Wave Institute</p>
+                </div>
+                <div class="r-item-body">
+                    <h2 class="r-title">Brand Designer &amp; Graphic Designer</h2>
+                    <p class="r-desc">Forex education brand. Logo design and Forex Trade Expo event poster system.</p>
+                </div>
+            </div>
+
+            <div class="r-item">
+                <div class="r-item-meta">
+                    <p class="r-date">2024</p>
+                    <p class="r-company">Flossytrukid</p>
+                </div>
+                <div class="r-item-body">
+                    <h2 class="r-title">Graphic Designer</h2>
+                    <p class="r-desc">Influencer / content creator. Business posters and YouTube thumbnail design.</p>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Education -->
+        <section class="r-section fade-up">
+            <p class="r-section-title">Education</p>
+            <div class="r-item">
+                <div class="r-item-meta">
+                    <p class="r-date">2023 – Present</p>
+                    <p class="r-company">Strathmore University</p>
+                </div>
+                <div class="r-item-body">
+                    <h2 class="r-title">B.Sc. Electrical Engineering</h2>
+                    <p class="r-desc">Third-year student on a full scholarship. Scholarship awarded following first
+                        place in Kenya's National Mathematics Contest (2023). Coursework spans electronics, signal
+                        processing, embedded systems, and computer engineering.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recognitions -->
+        <section class="r-section fade-up">
+            <p class="r-section-title">Recognitions</p>
+
+            <div class="r-item">
+                <div class="r-item-meta">
+                    <p class="r-date">2024</p>
+                    <p class="r-company">Red Bull Basement</p>
+                </div>
+                <div class="r-item-body">
+                    <h2 class="r-title">Kenya Top 15 National Finalist</h2>
+                    <p class="r-desc">Angawatch selected among the top 15 ventures from over 3,800 entries nationwide.
+                    </p>
+                </div>
+            </div>
+
+            <div class="r-item">
+                <div class="r-item-meta">
+                    <p class="r-date">2024</p>
+                    <p class="r-company">IEEE ICASSP</p>
+                </div>
+                <div class="r-item-body">
+                    <h2 class="r-title">International Top 5 Startup</h2>
+                    <p class="r-desc">Angawatch ranked in the top 5 startups internationally at ICASSP.</p>
+                </div>
+            </div>
+
+            <div class="r-item">
+                <div class="r-item-meta">
+                    <p class="r-date">2024</p>
+                    <p class="r-company">IEEE Climate Hackathon</p>
+                </div>
+                <div class="r-item-body">
+                    <h2 class="r-title">Award Winner</h2>
+                    <p class="r-desc">Angawatch awarded at the IEEE Climate Hackathon for innovation in climate-tech and
+                        flood early-warning systems.</p>
+                </div>
+            </div>
+
+            <div class="r-item">
+                <div class="r-item-meta">
+                    <p class="r-date">2023</p>
+                    <p class="r-company">Kenya National Mathematics Contest</p>
+                </div>
+                <div class="r-item-body">
+                    <h2 class="r-title">National Winner</h2>
+                    <p class="r-desc">First place in Kenya's National Mathematics Contest — the result that earned a
+                        full scholarship to Strathmore University.</p>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Skills -->
+        <section class="r-section fade-up">
+            <p class="r-section-title">Skills</p>
+            <div class="skills-grid">
+                <span class="skill-pill">Graphic Design</span>
+                <span class="skill-pill">Brand Identity</span>
+                <span class="skill-pill">Web Design</span>
+                <span class="skill-pill">Logo Design</span>
+                <span class="skill-pill">Social Media</span>
+                <span class="skill-pill">Large-Format Print</span>
+                <span class="skill-pill">Pitch Decks</span>
+                <span class="skill-pill">Photography</span>
+                <span class="skill-pill">Videography</span>
+                <span class="skill-pill">Video Editing</span>
+                <span class="skill-pill">Art Direction</span>
+                <span class="skill-pill">Layout &amp; Typography</span>
+                <span class="skill-pill">No-Code / Framer</span>
+            </div>
+        </section>
+
+        <!-- Toolkit -->
+        <section class="r-section fade-up">
+            <p class="r-section-title">Toolkit</p>
+            <div class="toolkit-grid">
+                <span class="toolkit-item">Canva Premium</span>
+                <span class="toolkit-item">Kittl Premium</span>
+                <span class="toolkit-item">Figma</span>
+                <span class="toolkit-item">Framer</span>
+                <span class="toolkit-item">Samsung S23 Ultra + Tripod + DJI Mic</span>
+                <span class="toolkit-item">AutoCAD (3D site modelling)</span>
+                <span class="toolkit-item">Zoo.dev / Zookeeper</span>
+                <span class="toolkit-item">HP Laptop</span>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <div class="resume-cta fade-up">
+            <a href="mailto:nguitui.kamau@gmail.com" class="btn-white" data-magnetic>Get in touch</a>
+            <span style="font-family:var(--font-sans);font-size:13px;color:var(--text2);">
+                Available for freelance, consultation &amp; brand projects across Kenya and beyond
+            </span>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <a href="index.html" class="footer-logo">Ryan Nguitui — Beyond Canvas <sup>®</sup>2026</a>
+            <nav class="footer-social">
+                <a href="https://instagram.com/beyond.canvas.ke" target="_blank" rel="noopener"
+                    data-magnetic>Instagram</a>
+                <a href="https://www.linkedin.com/in/ryan-nguitui/" target="_blank" rel="noopener" data-magnetic>LinkedIn</a>
+                <a href="https://twitter.com" target="_blank" rel="noopener" data-magnetic>Twitter</a>
+            </nav>
+            <span class="footer-copy">Graphic &amp; Web Designer — Nairobi, Kenya</span>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>document.getElementById('nav').classList.add('scrolled');</script>
+</body>
+
+</html>

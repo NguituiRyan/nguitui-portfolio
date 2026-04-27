@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Ryan Nguitui — Graphic &amp; Web Designer · Beyond Canvas</title>
+    <meta name="description" content="Graphic and web designer based in Nairobi. Brand identities, websites, social creative, and large-format event design for Kenyan brands and ventures.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <!-- GSAP for magnetic cursor -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- Magnetic cursor (single element — replaces ring+dot) -->
+<div class="magnetic-cursor" id="magnetic-cursor" aria-hidden="true"></div>
+
+<!-- "I'm Ryan Nguitui" watermark — fixed bottom-right, appears after work section -->
+<div class="ryan-watermark" id="ryan-watermark" aria-hidden="true">
+    I'm Ryan Nguitui<sup>®</sup>
+</div>
+
+<!-- =============================================
+     NAVIGATION
+============================================== -->
+<header class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="/" class="nav-logo" data-magnetic>Ryan Nguitui</a>
+
+        <nav class="nav-links" aria-label="Primary">
+            <a href="#work"    class="nav-link">Work</a>
+            <a href="#about"   class="nav-link">About</a>
+            <a href="mailto:nguitui.kamau@gmail.com" class="nav-link">Email</a>
+            <a href="https://wa.me/254741201961" class="nav-link" target="_blank" rel="noopener">WhatsApp</a>
+            <a href="resume.html" class="nav-link">Resume</a>
+        </nav>
+
+        <span class="nav-year" aria-hidden="true">®2026</span>
+
+        <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">
+            <span></span><span></span>
+        </button>
+    </div>
+
+    <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+        <a href="#work"       class="m-link">Work</a>
+        <a href="#about"      class="m-link">About</a>
+        <a href="#contact"    class="m-link">Contact</a>
+        <a href="resume.html" class="m-link">Resume</a>
+        <div class="m-social">
+            <a href="mailto:nguitui.kamau@gmail.com">Email</a>
+            <a href="https://wa.me/254741201961" target="_blank" rel="noopener">WhatsApp</a>
+            <a href="tel:+254741201961">Call Me</a>
+            <a href="https://instagram.com/beyond.canvas.ke" target="_blank" rel="noopener">Instagram</a>
+        </div>
+    </div>
+</header>
+
+
+<!-- =============================================
+     HERO — Portrait + large name only
+============================================== -->
+<section class="hero" id="hero">
+
+    <!-- Image cursor trail images injected by JS -->
+
+    <div class="hero-grid">
+
+        <!-- LEFT: Name only, big -->
+        <div class="hero-left">
+            <h1 class="hero-title">Ryan<br><em>Nguitui.</em></h1>
+
+            <p class="hero-tagline">
+                <span class="tagline-long">The designer behind brands that earn attention. Graphic design, web, print, and video for clients who take their visual identity seriously — built out of Nairobi, for wherever the work needs to land.</span>
+                <span class="tagline-short">Graphic &amp; Web Designer.<br>Building premium brands out of Nairobi.</span>
+            </p>
+
+            <div class="hero-ctas">
+                <a href="mailto:nguitui.kamau@gmail.com" class="hero-cta cta-desktop" data-magnetic>Email Me ↗</a>
+                <a href="https://wa.me/254741201961" class="hero-cta cta-mobile" target="_blank" rel="noopener">WhatsApp Me ↗</a>
+            </div>
+        </div>
+
+        <!-- RIGHT: Portrait 
+             To update: drop your photo named "portrait.png" inside "img/portrait/"! -->
+        <div class="hero-right">
+            <div class="portrait-img" style="background: url('img/portrait/portrait.jpg') center top / cover no-repeat;"></div>
+        </div>
+
+    </div>
+
+    <div class="scroll-hint" aria-hidden="true">
+        <span class="scroll-hint-line"></span>
+    </div>
+</section>
+
+
+<!-- =============================================
+     WORK — 9 Selected projects (3 × 3 grid)
+============================================== -->
+<section class="work-section" id="work">
+    <div class="work-head fade-up">
+        <h2 class="work-title"><em>My art</em></h2>
+    </div>
+
+    <div class="card-stack-root fade-up" id="card-stack-root">
+        <div class="card-stack-stage" id="card-stack-stage" tabindex="0" role="region" aria-label="Projects"></div>
+        <div class="card-stack-dots" id="card-stack-dots"></div>
+    </div>
+</section>
+
+
+<!-- =============================================
+     ABOUT — Description + Skills + Worked With
+============================================== -->
+<section class="about-section" id="about">
+    <div class="about-inner">
+        <div class="about-top fade-up">
+            <div class="about-eyebrow">
+                <span class="label-num">—</span>
+                <span>About</span>
+            </div>
+            <p class="about-desc">
+                <span class="about-desc-desktop">
+                    THIRD-YEAR ELECTRICAL ENGINEERING STUDENT AT STRATHMORE UNIVERSITY — MEANING
+                    I SPEND MOST OF MY TIME ON CIRCUIT DIAGRAMS I WILL NEVER BUILD AND DESIGN
+                    WORK I ACTUALLY CARE ABOUT. WHEN I'M NOT IN THE LECTURE HALL, I RUN BEYOND
+                    CANVAS, A NAIROBI-BASED DESIGN PRACTICE WORKING ACROSS BRAND IDENTITY, WEB,
+                    SOCIAL CREATIVE, AND LARGE-FORMAT PRINT. CO-FOUNDER OF ANGAWATCH (CLIMATE-TECH
+                    — TRYING TO STOP FLOODS BEFORE THEY BECOME YOUR PROBLEM).
+                </span>
+                <span class="about-desc-mobile">
+                    THIRD-YEAR ELECTRICAL ENGINEERING STUDENT AT STRATHMORE UNIVERSITY. I RUN BEYOND CANVAS, A NAIROBI-BASED DESIGN PRACTICE WORKING ACROSS BRAND IDENTITY, WEB, SOCIAL CREATIVE, AND LARGE-FORMAT PRINT, AND I'M THE CO-FOUNDER OF ANGAWATCH.
+                </span>
+            </p>
+        </div>
+
+        <div class="about-skills fade-up">
+            <p class="col-label">Skills</p>
+            <div class="skills-pills">
+                <span class="skill-pill">Graphic Design</span>
+                <span class="skill-pill">Brand Identity</span>
+                <span class="skill-pill">Logo Design</span>
+                <span class="skill-pill">Web Design</span>
+                <span class="skill-pill">Social Media Creative</span>
+                <span class="skill-pill">Large-Format Print</span>
+                <span class="skill-pill">Pitch Decks</span>
+                <span class="skill-pill">Video Recording</span>
+                <span class="skill-pill">Video Editing</span>
+                <span class="skill-pill">Photography</span>
+                <span class="skill-pill">Art Direction</span>
+                <span class="skill-pill">Layout &amp; Typography</span>
+            </div>
+    </div>
+</section>
+
+<!-- =============================================
+     ZOOM PARALLAX
+============================================== -->
+<section class="zoom-parallax-container" id="zoom-parallax">
+    <div class="zoom-parallax-sticky">
+        <div class="zoom-layer" data-scale-target="4"><div class="img-wrap pos-0"><img src="img/zoom-parallax/1_1.svg" loading="lazy" alt="Zoom 1"></div></div>
+        <div class="zoom-layer" data-scale-target="5"><div class="img-wrap pos-1"><img src="img/zoom-parallax/1_2 (2).png" loading="lazy" alt="Zoom 2"></div></div>
+        <div class="zoom-layer" data-scale-target="6"><div class="img-wrap pos-2"><img src="img/zoom-parallax/1_3.jpg" loading="lazy" alt="Zoom 3"></div></div>
+        <div class="zoom-layer" data-scale-target="5"><div class="img-wrap pos-3"><img src="img/zoom-parallax/1_4.jpg" loading="lazy" alt="Zoom 4"></div></div>
+        <div class="zoom-layer" data-scale-target="6"><div class="img-wrap pos-4"><img src="img/zoom-parallax/5.jpg" loading="lazy" alt="Zoom 5"></div></div>
+        <div class="zoom-layer" data-scale-target="8"><div class="img-wrap pos-5"><img src="img/zoom-parallax/4_20260221_183908_0003.jpg" loading="lazy" alt="Zoom 6"></div></div>
+        <div class="zoom-layer" data-scale-target="9"><div class="img-wrap pos-6"><img src="img/zoom-parallax/Africa_20240414_214039_0000.jpg" loading="lazy" alt="Zoom 7"></div></div>
+    </div>
+</section>
+
+
+
+<!-- =============================================
+     TESTIMONIALS — hover to see the truth
+============================================== -->
+<section class="testi-section" aria-label="What people say">
+    <p class="testi-hint fade-up">
+        <span class="testi-hint-desktop">— hover to see the truth</span>
+        <span class="testi-hint-mobile">— tap the testimonial for the truth</span>
+    </p>
+
+    <div class="testi-item fade-up">
+        <p class="testi-mark" aria-hidden="true">"</p>
+        <div class="testi-text-wrap">
+            <p class="testi-public">An exceptional eye for design. Ryan built my medical school presentation website and a custom poster from scratch — without me having to ask twice.</p>
+            <div class="testi-reveal" aria-hidden="true">
+                <p class="testi-real">He's my brother. He built my medical school website and made my poster. I owe him lunch. Maybe dinner. Definitely not cash.</p>
+            </div>
+        </div>
+        <div class="testi-who">
+            <div class="testi-avatar">
+                <img src="img/testimonials/ryel.jpg" alt="Ryel W." loading="lazy" onerror="this.style.display='none'">
+                <span class="testi-initials">RW</span>
+            </div>
+            <div class="testi-meta">
+                <span class="testi-name">Ryel W.</span>
+                <span class="testi-role">Medicine &amp; Surgery Student · Sister</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="testi-item fade-up">
+        <p class="testi-mark" aria-hidden="true">"</p>
+        <div class="testi-text-wrap">
+            <p class="testi-public">Ryan completely transformed how Modern Cushions is perceived in the market. Every brief was exceeded. Every deadline was met.</p>
+            <div class="testi-reveal" aria-hidden="true">
+                <p class="testi-real">He did our brand then immediately asked for a review. I was still looking at the invoice. He waited. I typed this.</p>
+            </div>
+        </div>
+        <div class="testi-who">
+            <div class="testi-avatar">
+                <img src="img/testimonials/edward.jpg" alt="Edward M." loading="lazy" onerror="this.style.display='none'">
+                <span class="testi-initials">EM</span>
+            </div>
+            <div class="testi-meta">
+                <span class="testi-name">Edward M.</span>
+                <span class="testi-role">Managing Director · Modern Cushions</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="testi-item fade-up">
+        <p class="testi-mark" aria-hidden="true">"</p>
+        <div class="testi-text-wrap">
+            <p class="testi-public">The creative work produced for our student associations was consistently professional, thoughtful, and well-received across the university community.</p>
+            <div class="testi-reveal" aria-hidden="true">
+                <p class="testi-real">His SCESA posters were everywhere on campus for months. I didn't know who made them until he sent me a LinkedIn request and then this form.</p>
+            </div>
+        </div>
+        <div class="testi-who">
+            <div class="testi-avatar">
+                <img src="img/testimonials/eugene.jpg" alt="Eugene O." loading="lazy" onerror="this.style.display='none'">
+                <span class="testi-initials">EO</span>
+            </div>
+            <div class="testi-meta">
+                <span class="testi-name">Eugene O.</span>
+                <span class="testi-role">President · Strathmore University</span>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+
+
+<!-- =============================================
+     GALLERY — Work showcase
+============================================== -->
+<section class="gallery-section" id="gallery">
+    <h2 class="gallery-heading fade-up">A glimpse of the work</h2>
+    <div class="gallery-stage-wrap">
+        <div class="gallery-stage" id="galleryStage"></div>
+    </div>
+    <div class="gallery-reel" id="galleryReel" aria-hidden="true">
+        <div class="gallery-reel-track"></div>
+    </div>
+</section>
+
+
+<!-- =============================================
+     CONTACT
+============================================== -->
+<section class="contact-section" id="contact">
+    <div class="contact-inner">
+        <h2 class="contact-title fade-up" data-morph="LET'S BUILD">
+            <span class="morph-base">Let's<br>talk.</span>
+        </h2>
+
+        <div class="contact-body fade-up">
+            <div class="contact-links">
+                <a href="mailto:nguitui.kamau@gmail.com" class="contact-email">nguitui.kamau@gmail.com</a>
+                <a href="mailto:nguitui.kamau@gmail.com" class="btn-white" data-magnetic>Let's Build →</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- =============================================
+     FOOTER
+============================================== -->
+<footer class="footer">
+    <div class="footer-inner">
+        <span class="footer-logo">Ryan Nguitui — Beyond Canvas <sup>®</sup>2026</span>
+        <nav class="footer-social" aria-label="Social">
+            <a href="https://instagram.com/beyond.canvas.ke" target="_blank" rel="noopener" data-magnetic>Instagram</a>
+            <a href="https://www.linkedin.com/in/ryan-nguitui/" target="_blank" rel="noopener" data-magnetic>LinkedIn</a>
+        </nav>
+        <span class="footer-copy">Graphic &amp; Web Designer — Nairobi, Kenya</span>
+    </div>
+</footer>
+
+<!-- PROJECT MODAL -->
+<div class="proj-modal-backdrop" id="projModalBackdrop" aria-hidden="true">
+    <div class="proj-modal" role="dialog" aria-modal="true" aria-labelledby="projModalTitle">
+        <button class="proj-modal-close" id="projModalClose" aria-label="Close">&#x2715;</button>
+        <div class="proj-modal-img-wrap">
+            <div class="proj-modal-img" id="projModalImg"></div>
+        </div>
+        <div class="proj-modal-body">
+            <div class="proj-modal-tag" id="projModalTag"></div>
+            <h3 class="proj-modal-title" id="projModalTitle"></h3>
+            <p class="proj-modal-cat" id="projModalCat"></p>
+            <p class="proj-modal-desc" id="projModalDesc"></p>
+        </div>
+    </div>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>

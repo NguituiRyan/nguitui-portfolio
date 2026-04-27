@@ -1,0 +1,8 @@
+.claude/
+compress-images.ps1
+Canva pics/
+*.psd
+*.ai
+*.sketch
+Thumbs.db
+.DS_Store
