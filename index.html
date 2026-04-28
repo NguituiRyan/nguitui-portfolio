@@ -107,7 +107,7 @@
         <!-- RIGHT: Portrait 
              To update: drop your photo named "portrait.png" inside "img/portrait/"! -->
         <div class="hero-right">
-            <div class="portrait-img" style="background: url('img/portrait/portrait.png') center top / cover no-repeat;"></div>
+            <div class="portrait-img" style="background: url('img/portrait/Untitled design_20260427_214526_0000.png') center bottom / contain no-repeat;"></div>
         </div>
 
     </div>
@@ -212,17 +212,35 @@
 
 
 <!-- =============================================
-     ZOOM PARALLAX
+     STICKY SCROLL GALLERY
 ============================================== -->
-<section class="zoom-parallax-container" id="zoom-parallax">
-    <div class="zoom-parallax-sticky">
-        <div class="zoom-layer" data-scale-target="4"><div class="img-wrap pos-0"><img src="img/zoom-parallax/1_1.svg" loading="lazy" alt="Zoom 1"></div></div>
-        <div class="zoom-layer" data-scale-target="5"><div class="img-wrap pos-1"><img src="img/zoom-parallax/1_2 (2).png" loading="lazy" alt="Zoom 2"></div></div>
-        <div class="zoom-layer" data-scale-target="6"><div class="img-wrap pos-2"><img src="img/zoom-parallax/1_3.jpg" loading="lazy" alt="Zoom 3"></div></div>
-        <div class="zoom-layer" data-scale-target="5"><div class="img-wrap pos-3"><img src="img/zoom-parallax/1_4.jpg" loading="lazy" alt="Zoom 4"></div></div>
-        <div class="zoom-layer" data-scale-target="6"><div class="img-wrap pos-4"><img src="img/zoom-parallax/5.jpg" loading="lazy" alt="Zoom 5"></div></div>
-        <div class="zoom-layer" data-scale-target="8"><div class="img-wrap pos-5"><img src="img/zoom-parallax/4_20260221_183908_0003.jpg" loading="lazy" alt="Zoom 6"></div></div>
-        <div class="zoom-layer" data-scale-target="9"><div class="img-wrap pos-6"><img src="img/zoom-parallax/Africa_20240414_214039_0000.jpg" loading="lazy" alt="Zoom 7"></div></div>
+<section class="sticky-gallery" id="sticky-gallery">
+    <div class="sticky-gallery-grid">
+        <!-- Left column — scrolls naturally (6 images) -->
+        <div class="sg-col sg-col-scroll">
+            <figure class="sg-fig"><img src="img/sticky-scroll/Untitled Project (2).png" loading="lazy" alt="Design work"></figure>
+            <figure class="sg-fig"><img src="img/sticky-scroll/New Cafe Menu .png" loading="lazy" alt="Design work"></figure>
+            <figure class="sg-fig"><img src="img/sticky-scroll/Copy of Green Red Illustrative Camp Party Invitation_20240722_194952_0000.png" loading="lazy" alt="Design work"></figure>
+            <figure class="sg-fig"><img src="img/sticky-scroll/20240201_221235_0000.png" loading="lazy" alt="Design work"></figure>
+            <figure class="sg-fig"><img src="img/sticky-scroll/Blue and Grey Modern Discount Coupon Code Instagram Post_20251204_101032_0000.png" loading="lazy" alt="Design work"></figure>
+            <figure class="sg-fig"><img src="img/sticky-scroll/Grey Newspaper Simple Announcement Press Release Document_20250811_103116_0000.png" loading="lazy" alt="Design work"></figure>
+        </div>
+        <!-- Center column — sticky (4 images fill viewport) -->
+        <div class="sg-col sg-col-sticky">
+            <figure class="sg-fig sg-fig-fill"><img src="img/sticky-scroll/Purple Yellow Modern Restaurant Food Menu Promotion Instagram Post_20240801_115756_0000.png" loading="lazy" alt="Design work"></figure>
+            <figure class="sg-fig sg-fig-fill"><img src="img/sticky-scroll/Grey Minimalist Wall Art Photo Frame Mockup for Instagram Story_20240524_144716_0000.png" loading="lazy" alt="Design work"></figure>
+            <figure class="sg-fig sg-fig-fill"><img src="img/sticky-scroll/Massive_20240617_183454_0000.png" loading="lazy" alt="Design work"></figure>
+            <figure class="sg-fig sg-fig-fill"><img src="img/sticky-scroll/20240201_170054_0000.png" loading="lazy" alt="Design work"></figure>
+        </div>
+        <!-- Right column — scrolls naturally (6 images) -->
+        <div class="sg-col sg-col-scroll">
+            <figure class="sg-fig"><img src="img/sticky-scroll/Blue Pink Bold Illustration Book Drive Event Poster_20251119_105002_0000.png" loading="lazy" alt="Design work"></figure>
+            <figure class="sg-fig"><img src="img/sticky-scroll/Merry Christmas Facebook Post_20251222_211203_0000.png" loading="lazy" alt="Design work"></figure>
+            <figure class="sg-fig"><img src="img/sticky-scroll/White And Blue Modern 2023 School Admission Poster_20251105_111537_0000.png" loading="lazy" alt="Design work"></figure>
+            <figure class="sg-fig"><img src="img/sticky-scroll/Yellow Bold Flea Market Event Poster_20251119_104141_0000.png" loading="lazy" alt="Design work"></figure>
+            <figure class="sg-fig"><img src="img/sticky-scroll/Black and Red Dynamic Bold World Affairs and News YouTube Thumbnail_20251105_160411_0000.png" loading="lazy" alt="Design work"></figure>
+            <figure class="sg-fig"><img src="img/sticky-scroll/Blue and Gold Elegant Financial Accounting Completion Certificate_20251016_123831_0000.png" loading="lazy" alt="Design work"></figure>
+        </div>
     </div>
 </section>
 
@@ -333,9 +351,6 @@
     <h2 class="gallery-heading fade-up">A glimpse of the work</h2>
     <div class="gallery-stage-wrap">
         <div class="gallery-stage" id="galleryStage"></div>
-    </div>
-    <div class="gallery-reel" id="galleryReel" aria-hidden="true">
-        <div class="gallery-reel-track"></div>
     </div>
 </section>
 

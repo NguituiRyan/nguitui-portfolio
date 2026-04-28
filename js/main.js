@@ -426,13 +426,19 @@
     // The longer you tap, the more ridiculous it gets.
     var QUIPS = [
         { min: 0,    options: ['press to play'] },
-        { min: 1,    options: ['nice', 'oh hello', 'mm'] },
-        { min: 4,    options: ["you're into it", 'keep going', 'lovely'] },
-        { min: 10,   options: ['still tapping?', 'ok ok', 'addicted yet?'] },
-        { min: 25,   options: ["i'm flattered", 'easy tiger', 'wow'] },
-        { min: 60,   options: ['ryan sees u', 'go outside', 'log off'] },
-        { min: 120,  options: ['this is your job now', 'genuinely concerned'] },
-        { min: 250,  options: ['you win nothing', 'earn a coffee', 'touch grass'] }
+        { min: 1,    options: ['nice', 'oh hello', 'mm', 'hey there', 'noted'] },
+        { min: 4,    options: ["you're into it", 'keep going', 'lovely', 'more more more', 'ooh'] },
+        { min: 10,   options: ['still tapping?', 'ok ok', 'addicted yet?', 'hire me maybe?', 'tap tap tap'] },
+        { min: 25,   options: ["i'm flattered", 'easy tiger', 'wow', 'your finger ok?', 'dedication'] },
+        { min: 40,   options: ['are you procrastinating?', 'tell your boss i said hi', 'this counts as cardio'] },
+        { min: 60,   options: ['ryan sees u', 'go outside', 'log off', 'the sun misses you', 'grass exists'] },
+        { min: 90,   options: ['seriously?', 'you could be designing rn', 'this is art i guess'] },
+        { min: 120,  options: ['this is your job now', 'genuinely concerned', 'professional tapper', 'put this on your CV'] },
+        { min: 180,  options: ['your therapist should know', 'we need to talk', "i'm telling your mum"] },
+        { min: 250,  options: ['you win nothing', 'earn a coffee', 'touch grass', 'ok legend', 'certified maniac'] },
+        { min: 400,  options: ['nairobi is proud of you', 'strathmore did not teach this', 'you broke the simulation'] },
+        { min: 600,  options: ['ryan owes you lunch now', 'this tap has a pension plan', 'call guinness world records'] },
+        { min: 1000, options: ['1000. you absolute menace.', 'i have no more words', 'the button fears you'] }
     ];
     function getQuip(count) {
         var tier = QUIPS[0];
@@ -1164,26 +1170,25 @@ if (mTrack) {
    ====================================================== */
 (function initGallery() {
     var IMGS = [
-        'img/hero-cursor/1_20240801_203948_0000.png',
-        'img/hero-cursor/1_20250601_123911_0000.png',
-        'img/hero-cursor/1_20250621_002811_0000.png',
-        'img/hero-cursor/20240725_094905_0000.png',
-        'img/hero-cursor/3_20241222_171321_0002.png',
-        'img/hero-cursor/4_20260221_183908_0003.png',
-        'img/hero-cursor/Africa_20240414_214039_0000.png',
-        'img/hero-cursor/AllSaintsTeensCamp.png',
-        'img/hero-cursor/ArtExibitionPoster.png',
-        'img/hero-cursor/Beige Pink Cream Modern Number Typography Graduation Party Invitation_20250526_153405_0000.png',
-        'img/hero-cursor/Black White Simple House Logo_20241115_124548_0000.png',
-        'img/hero-cursor/Copy of Green yellow blue elegant book club logo_20240429_124308_0000.png',
-        'img/hero-cursor/Neon and Black Geometric Digital Marketing Logo_20251124_223847_0001.png',
-        'img/hero-cursor/Purple White Modern laboratory Medical Service Flyer_20240524_083257_0000.png',
-        'img/hero-cursor/Purple Yellow Modern Restaurant Food Menu Promotion Instagram Post_20240731_065248_0000.png',
-        'img/hero-cursor/Yellow Bold Flea Market Event Poster_20251118_225448_0000.png',
+        'img/sticky-scroll/Untitled Project (2).png',
+        'img/sticky-scroll/New Cafe Menu .png',
+        'img/sticky-scroll/Copy of Green Red Illustrative Camp Party Invitation_20240722_194952_0000.png',
+        'img/sticky-scroll/Purple Yellow Modern Restaurant Food Menu Promotion Instagram Post_20240801_115756_0000.png',
+        'img/sticky-scroll/20240201_221235_0000.png',
+        'img/sticky-scroll/Grey Minimalist Wall Art Photo Frame Mockup for Instagram Story_20240524_144716_0000.png',
+        'img/sticky-scroll/Massive_20240617_183454_0000.png',
+        'img/sticky-scroll/20240201_170054_0000.png',
+        'img/sticky-scroll/Blue and Grey Modern Discount Coupon Code Instagram Post_20251204_101032_0000.png',
+        'img/sticky-scroll/Blue Pink Bold Illustration Book Drive Event Poster_20251119_105002_0000.png',
+        'img/sticky-scroll/Merry Christmas Facebook Post_20251222_211203_0000.png',
+        'img/sticky-scroll/White And Blue Modern 2023 School Admission Poster_20251105_111537_0000.png',
+        'img/sticky-scroll/Yellow Bold Flea Market Event Poster_20251119_104141_0000.png',
+        'img/sticky-scroll/Black and Red Dynamic Bold World Affairs and News YouTube Thumbnail_20251105_160411_0000.png',
+        'img/sticky-scroll/Grey Newspaper Simple Announcement Press Release Document_20250811_103116_0000.png',
+        'img/sticky-scroll/Blue and Gold Elegant Financial Accounting Completion Certificate_20251016_123831_0000.png',
     ];
 
     var stage    = document.getElementById('galleryStage');
-    var reelEl   = document.getElementById('galleryReel');
     if (!stage) return;
 
     var W       = 140;    /* card width  (px) */
@@ -1240,23 +1245,7 @@ if (mTrack) {
         });
     });
 
-    /* --- Mobile reel (duplicate for seamless loop) --- */
-    if (reelEl) {
-        var track = reelEl.querySelector('.gallery-reel-track');
-        if (track) {
-            IMGS.concat(IMGS).forEach(function(src) {
-                var el  = document.createElement('div');
-                el.className  = 'gallery-reel-card';
-                var img       = document.createElement('img');
-                img.src       = encodeURI(src);
-                img.alt       = '';
-                img.loading   = 'lazy';
-                img.draggable = false;
-                el.appendChild(img);
-                track.appendChild(el);
-            });
-        }
-    }
+    /* Mobile reel removed — same overlapping card fan on all devices */
 
     /* --- Entrance animation --- */
     var triggered = false;
@@ -1323,111 +1312,5 @@ if (mTrack) {
 
 
 /* ======================================================
-   13. ZOOM PARALLAX (Vanilla port of 21.dev ZoomParallax)
-   Force auto-scrolls through the zoom in the direction of
-   travel — both downward (entering from above) and upward
-   (re-entering from below). Cannot be aborted mid-flight;
-   the only way out is to wait for it to land.
+   13. STICKY SCROLL GALLERY — no JS needed, pure CSS sticky
    ====================================================== */
-(function initZoomParallax() {
-    var ctn = document.getElementById('zoom-parallax');
-    if (!ctn) return;
-
-    var layers = Array.from(ctn.querySelectorAll('.zoom-layer'));
-    if (!layers.length) return;
-
-    var isAutoScrolling = false;
-    var inZoomPhase = false;
-    var prevTop = null;
-    var prevBottom = null;
-    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    function easeInOutCubic(t) {
-        return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
-    }
-
-    // direction: 'down' scrolls past the bottom of the zoom; 'up' scrolls back above its top
-    function autoScrollThroughZoom(direction) {
-        if (isAutoScrolling || reducedMotion) return;
-
-        var rect = ctn.getBoundingClientRect();
-        var vh = window.innerHeight;
-        var startY = window.pageYOffset || document.documentElement.scrollTop;
-
-        var distance;
-        if (direction === 'down') {
-            // Travel until the section's bottom hits the viewport bottom (zoom phase ends).
-            distance = (rect.bottom - vh) + 8;
-        } else {
-            // Travel until the section's top is just below the viewport top (zoom phase ends going up).
-            distance = rect.top - 8; // rect.top is negative here, so this is a negative distance
-        }
-        if (Math.abs(distance) <= 40) return;
-
-        isAutoScrolling = true;
-
-        var startTime = performance.now();
-        var duration = Math.min(2600, 700 + Math.abs(distance) * 0.5);
-
-        function step(now) {
-            var t = Math.min(1, (now - startTime) / duration);
-            var eased = easeInOutCubic(t);
-            window.scrollTo(0, startY + distance * eased);
-
-            if (t < 1) {
-                requestAnimationFrame(step);
-            } else {
-                isAutoScrolling = false;
-            }
-        }
-        requestAnimationFrame(step);
-    }
-
-    function tick() {
-        var rect = ctn.getBoundingClientRect();
-        var vh = window.innerHeight;
-        var progress = 0;
-        var nowInZoom = rect.top <= 0 && rect.bottom > vh;
-
-        // Trigger on transitions INTO the zoom phase from either direction.
-        // Skip the first sample so a mid-zoom reload doesn't fire spuriously.
-        if (!isAutoScrolling && prevTop !== null && prevBottom !== null && !inZoomPhase && nowInZoom) {
-            // Entering downward: section's top crossed the viewport top.
-            if (prevTop > 0) {
-                autoScrollThroughZoom('down');
-            }
-            // Entering upward: section's bottom crossed the viewport bottom.
-            else if (prevBottom <= vh) {
-                autoScrollThroughZoom('up');
-            }
-        }
-
-        inZoomPhase = nowInZoom;
-        prevTop = rect.top;
-        prevBottom = rect.bottom;
-
-        if (rect.top <= 0) {
-            var totalScroll = rect.height - vh;
-            if (totalScroll > 0) {
-                progress = Math.max(0, Math.min(1, -rect.top / totalScroll));
-            }
-        }
-
-        var isMob = window.innerWidth <= 768;
-
-        layers.forEach(function(layer) {
-            var targetScale = parseFloat(layer.getAttribute('data-scale-target')) || 4;
-            if (isMob) {
-                targetScale = targetScale * 2; // Double the target zoom on mobile to compensate for 1.5X starting layout
-            }
-            var currentScale = 1 + progress * (targetScale - 1);
-            layer.style.transform = 'scale(' + currentScale + ')';
-        });
-    }
-
-    if (typeof gsap !== 'undefined' && gsap.ticker) {
-        gsap.ticker.add(tick);
-    } else {
-        window.addEventListener('scroll', function() { requestAnimationFrame(tick); }, { passive: true });
-    }
-})();

@@ -502,16 +502,15 @@ button,
     position: absolute;
     inset: 0;
     transition: transform .8s var(--ease);
-    transform-origin: center top;
-    transform: scale(1.95);
-    /* extreme zoom into top half */
+    transform-origin: center bottom;
+    transform: scale(1.4);
     filter: grayscale(100%);
     -webkit-mask-image: linear-gradient(to right, transparent 0%, black 25%);
     mask-image: linear-gradient(to right, transparent 0%, black 25%);
 }
 
 .hero-right:hover .portrait-img {
-    transform: scale(2.0);
+    transform: scale(1.45);
 }
 
 /* Hero load animations */
@@ -932,46 +931,77 @@ button,
 
 
 /* ======================================================
-   ZOOM PARALLAX
+   STICKY SCROLL GALLERY
    ====================================================== */
-.zoom-parallax-container {
-    position: relative;
-    height: 300vh;
+.sticky-gallery {
+    background: var(--bg);
     border-top: 1px solid var(--border);
 }
-.zoom-parallax-sticky {
+.sticky-gallery-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    padding: 8px;
+    max-width: var(--max-w);
+    margin-inline: auto;
+}
+
+/* Scrolling side columns */
+.sg-col-scroll {
+    display: grid;
+    gap: 8px;
+}
+
+/* Sticky center column */
+.sg-col-sticky {
     position: sticky;
     top: 0;
     height: 100vh;
-    overflow: hidden;
+    display: grid;
+    grid-template-rows: repeat(4, 1fr);
+    gap: 8px;
 }
-.zoom-layer {
-    position: absolute;
-    top: 0;
-    left: 0;
+
+/* Image figures */
+.sg-fig {
+    margin: 0;
     width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    will-change: transform;
+    overflow: hidden;
+    border-radius: 8px;
 }
-.img-wrap {
-    position: relative;
-}
-.img-wrap img {
+.sg-fig img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 8px; /* Slightly softer edges for photography */
+    display: block;
+    transition: transform .4s var(--ease);
+    border-radius: 8px;
 }
-.pos-0 { width: 25vw; height: 25vh; }
-.pos-1 { transform: translate(5vw, -30vh); width: 35vw; height: 30vh; }
-.pos-2 { transform: translate(-25vw, -10vh); width: 20vw; height: 45vh; }
-.pos-3 { transform: translate(27.5vw, 0); width: 25vw; height: 25vh; }
-.pos-4 { transform: translate(5vw, 27.5vh); width: 20vw; height: 25vh; }
-.pos-5 { transform: translate(-22.5vw, 27.5vh); width: 30vw; height: 25vh; }
-.pos-6 { transform: translate(25vw, 22.5vh); width: 15vw; height: 15vh; }
+.sg-fig:hover img {
+    transform: scale(1.03);
+}
+
+/* Side column images — natural aspect ratio */
+.sg-col-scroll .sg-fig img {
+    height: auto;
+    object-fit: contain;
+}
+
+/* Center column fills — stretch to fill row */
+.sg-fig-fill {
+    height: 100%;
+}
+
+/* Mobile: 3 columns maintained, tighter gaps */
+@media (max-width: 768px) {
+    .sticky-gallery-grid {
+        gap: 4px;
+        padding: 4px;
+    }
+    .sg-col-sticky {
+        gap: 4px;
+    }
+}
 
 /* ======================================================
    9. WORK / PROJECTS — 3 × 3 GRID
@@ -1887,16 +1917,16 @@ button,
 
 
     .portrait-img {
-        transform: scale(1.6) !important;
-        transform-origin: center 8% !important;
-        background-position: center 5% !important;
-        background-size: cover !important;
-        -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 100%) !important;
-        mask-image: linear-gradient(to bottom, black 55%, transparent 100%) !important;
+        transform: scale(1.4) !important;
+        transform-origin: center bottom !important;
+        background-position: center bottom !important;
+        background-size: contain !important;
+        -webkit-mask-image: none !important;
+        mask-image: none !important;
     }
 
     .hero-right:hover .portrait-img {
-        transform: scale(1.6) !important;
+        transform: scale(1.4) !important;
     }
 
     .trail-img {
@@ -2149,8 +2179,6 @@ button,
 }
 @media (max-width: 768px) {
     .gallery-section { padding-top: 64px; }
-    .gallery-stage-wrap { display: none; }
-    .gallery-reel { display: block; }
 }
 
 /* ======================================================
