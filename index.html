@@ -78,8 +78,29 @@
             </p>
 
             <div class="hero-ctas">
-                <a href="mailto:nguitui.kamau@gmail.com" class="hero-cta cta-desktop" data-magnetic>Email Me ↗</a>
-                <a href="https://wa.me/254741201961" class="hero-cta cta-mobile" target="_blank" rel="noopener">WhatsApp Me ↗</a>
+                <a href="mailto:nguitui.kamau@gmail.com" class="cta-glass cta-desktop" data-magnetic>
+                    <span class="cta-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#4285F4" d="M2 6.4c0-.9.7-1.6 1.6-1.6h16.8c.9 0 1.6.7 1.6 1.6v11.2c0 .9-.7 1.6-1.6 1.6H3.6c-.9 0-1.6-.7-1.6-1.6V6.4z"/>
+                            <path fill="#FBBC04" d="M22 6.4v.4L12 13.5 2 6.8v-.4c0-.9.7-1.6 1.6-1.6h16.8c.9 0 1.6.7 1.6 1.6z"/>
+                            <path fill="#EA4335" d="M12 13.5L2 6.8v-.4c0-.6.3-1.1.8-1.4L12 11.4l9.2-6.4c.5.3.8.8.8 1.4v.4l-10 6.7z"/>
+                            <path fill="#34A853" d="M22 17.6c0 .9-.7 1.6-1.6 1.6H3.6c-.9 0-1.6-.7-1.6-1.6V6.8l10 6.7 10-6.7v10.8z"/>
+                            <path fill="#C5221F" d="M22 6.4v.4L12 13.5 2 6.8v-.4l10 6.7 10-6.7z" opacity=".15"/>
+                        </svg>
+                    </span>
+                    <span class="cta-text">Let's Build</span>
+                    <span class="cta-arrow" aria-hidden="true">→</span>
+                </a>
+                <a href="https://wa.me/254741201961" class="cta-glass cta-mobile" target="_blank" rel="noopener" data-magnetic>
+                    <span class="cta-icon" aria-hidden="true">
+                        <svg viewBox="0 0 32 32" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#25D366" d="M16 .5C7.4.5.4 7.5.4 16.1c0 2.8.7 5.5 2.1 7.9L.3 32l8.3-2.2c2.3 1.3 4.9 2 7.5 2 8.6 0 15.6-7 15.6-15.6S24.6.5 16 .5z"/>
+                            <path fill="#fff" d="M23.6 19.7c-.4-.2-2.4-1.2-2.7-1.3-.4-.1-.6-.2-.9.2-.3.4-1 1.3-1.2 1.5-.2.2-.4.3-.8.1-.4-.2-1.7-.6-3.3-2-1.2-1.1-2-2.5-2.2-2.9-.2-.4 0-.6.2-.8.2-.2.4-.4.6-.6.2-.2.3-.4.4-.6.1-.2.1-.5 0-.7-.1-.2-.9-2.2-1.3-3-.3-.8-.7-.7-.9-.7h-.7c-.3 0-.7.1-1.1.5-.4.4-1.4 1.4-1.4 3.4 0 2 1.5 3.9 1.7 4.2.2.3 2.9 4.5 7.2 6.3 1 .4 1.8.7 2.4.9.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.5.3-.7.3-1.4.2-1.5-.1-.1-.4-.2-.8-.4z"/>
+                        </svg>
+                    </span>
+                    <span class="cta-text">Let's Build</span>
+                    <span class="cta-arrow" aria-hidden="true">→</span>
+                </a>
             </div>
         </div>
 
@@ -92,6 +113,7 @@
     </div>
 
     <div class="scroll-hint" aria-hidden="true">
+        <span class="scroll-hint-label">Scroll</span>
         <span class="scroll-hint-line"></span>
     </div>
 </section>
@@ -138,23 +160,56 @@
         </div>
 
         <div class="about-skills fade-up">
-            <p class="col-label">Skills</p>
-            <div class="skills-pills">
-                <span class="skill-pill">Graphic Design</span>
-                <span class="skill-pill">Brand Identity</span>
-                <span class="skill-pill">Logo Design</span>
-                <span class="skill-pill">Web Design</span>
-                <span class="skill-pill">Social Media Creative</span>
-                <span class="skill-pill">Large-Format Print</span>
-                <span class="skill-pill">Pitch Decks</span>
-                <span class="skill-pill">Video Recording</span>
-                <span class="skill-pill">Video Editing</span>
-                <span class="skill-pill">Photography</span>
-                <span class="skill-pill">Art Direction</span>
-                <span class="skill-pill">Layout &amp; Typography</span>
+            <div class="skills-col">
+                <p class="col-label">Skills</p>
+                <div class="skills-pills">
+                    <span class="skill-pill">Graphic Design</span>
+                    <span class="skill-pill">Brand Identity</span>
+                    <span class="skill-pill">Logo Design</span>
+                    <span class="skill-pill">Web Design</span>
+                    <span class="skill-pill">Social Media Creative</span>
+                    <span class="skill-pill">Large-Format Print</span>
+                    <span class="skill-pill">Pitch Decks</span>
+                    <span class="skill-pill">Video Recording</span>
+                    <span class="skill-pill">Video Editing</span>
+                    <span class="skill-pill">Photography</span>
+                    <span class="skill-pill">Art Direction</span>
+                    <span class="skill-pill">Layout &amp; Typography</span>
+                </div>
             </div>
-    </div>
+
+            <div class="arcade-col">
+                <p class="col-label">Tap therapy <span class="col-label-meta">— mostly harmless</span></p>
+                <button class="arcade-btn" type="button" id="tap-counter-btn" aria-label="Press to add a tap to the global counter">
+                    <span class="arcade-face">
+                        <span class="arcade-row arcade-row-top">
+                            <span class="arcade-live">
+                                <span class="arcade-live-dot" aria-hidden="true"></span>
+                                LIVE
+                            </span>
+                            <span class="arcade-label">DOPAMINE METER</span>
+                        </span>
+                        <span class="arcade-number-wrap">
+                            <span class="arcade-number" id="tap-counter-number">0000</span>
+                            <span class="arcade-units" aria-hidden="true">taps · planet earth</span>
+                        </span>
+                        <span class="arcade-row arcade-row-bot">
+                            <span class="arcade-cue">
+                                <svg class="arcade-cue-icon" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M12 5v14M5 12l7 7 7-7"/>
+                                </svg>
+                                <span class="arcade-cue-text" id="arcade-cue-text">press to play</span>
+                            </span>
+                            <span class="arcade-key" aria-hidden="true">TAP</span>
+                        </span>
+                    </span>
+                    <span class="arcade-stamp" aria-hidden="true">cert. ryan™</span>
+                </button>
+                <p class="arcade-foot">no progress saved · zero calories · 100% placebo</p>
+            </div>
+        </div>
 </section>
+
 
 <!-- =============================================
      ZOOM PARALLAX
@@ -179,35 +234,23 @@
 <section class="testi-section" aria-label="What people say">
     <p class="testi-hint fade-up">
         <span class="testi-hint-desktop">— hover to see the truth</span>
-        <span class="testi-hint-mobile">— tap the testimonial for the truth</span>
+        <span class="testi-hint-mobile">— tap a testimonial for the truth</span>
     </p>
 
     <div class="testi-item fade-up">
-        <p class="testi-mark" aria-hidden="true">"</p>
-        <div class="testi-text-wrap">
-            <p class="testi-public">An exceptional eye for design. Ryan built my medical school presentation website and a custom poster from scratch — without me having to ask twice.</p>
-            <div class="testi-reveal" aria-hidden="true">
-                <p class="testi-real">He's my brother. He built my medical school website and made my poster. I owe him lunch. Maybe dinner. Definitely not cash.</p>
-            </div>
-        </div>
-        <div class="testi-who">
-            <div class="testi-avatar">
-                <img src="img/testimonials/ryel.jpg" alt="Ryel W." loading="lazy" onerror="this.style.display='none'">
-                <span class="testi-initials">RW</span>
-            </div>
-            <div class="testi-meta">
-                <span class="testi-name">Ryel W.</span>
-                <span class="testi-role">Medicine &amp; Surgery Student · Sister</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="testi-item fade-up">
-        <p class="testi-mark" aria-hidden="true">"</p>
-        <div class="testi-text-wrap">
-            <p class="testi-public">Ryan completely transformed how Modern Cushions is perceived in the market. Every brief was exceeded. Every deadline was met.</p>
-            <div class="testi-reveal" aria-hidden="true">
-                <p class="testi-real">He did our brand then immediately asked for a review. I was still looking at the invoice. He waited. I typed this.</p>
+        <div class="testi-content">
+            <p class="testi-mark" aria-hidden="true">"</p>
+            <div class="testi-text-wrap" tabindex="0" role="button" aria-label="Flip to reveal the real testimonial">
+                <div class="testi-card-inner">
+                    <p class="testi-public">Ryan completely transformed how Modern Cushions is perceived in the market. Every brief was exceeded. Every deadline was met.</p>
+                    <div class="testi-reveal" aria-hidden="true">
+                        <p class="testi-real">He did our brand then immediately asked for a review. I was still looking at the invoice. He waited. I typed this.</p>
+                    </div>
+                </div>
+                <span class="testi-flip-cue" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 1-15.5 6.3"/><path d="M3 12a9 9 0 0 1 15.5-6.3"/><polyline points="21 4 21 9 16 9"/><polyline points="3 20 3 15 8 15"/></svg>
+                    <span>Tap to flip</span>
+                </span>
             </div>
         </div>
         <div class="testi-who">
@@ -223,11 +266,47 @@
     </div>
 
     <div class="testi-item fade-up">
-        <p class="testi-mark" aria-hidden="true">"</p>
-        <div class="testi-text-wrap">
-            <p class="testi-public">The creative work produced for our student associations was consistently professional, thoughtful, and well-received across the university community.</p>
-            <div class="testi-reveal" aria-hidden="true">
-                <p class="testi-real">His SCESA posters were everywhere on campus for months. I didn't know who made them until he sent me a LinkedIn request and then this form.</p>
+        <div class="testi-content">
+            <p class="testi-mark" aria-hidden="true">"</p>
+            <div class="testi-text-wrap" tabindex="0" role="button" aria-label="Flip to reveal the real testimonial">
+                <div class="testi-card-inner">
+                    <p class="testi-public">An exceptional eye for design. Ryan built my medical school presentation website and a custom poster from scratch — without me having to ask twice.</p>
+                    <div class="testi-reveal" aria-hidden="true">
+                        <p class="testi-real">He's my brother. He built my medical school website and made my poster. I owe him lunch. Maybe dinner. Definitely not cash.</p>
+                    </div>
+                </div>
+                <span class="testi-flip-cue" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 1-15.5 6.3"/><path d="M3 12a9 9 0 0 1 15.5-6.3"/><polyline points="21 4 21 9 16 9"/><polyline points="3 20 3 15 8 15"/></svg>
+                    <span>Tap to flip</span>
+                </span>
+            </div>
+        </div>
+        <div class="testi-who">
+            <div class="testi-avatar">
+                <img src="img/testimonials/ryel.jpg" alt="Ryel W." loading="lazy" onerror="this.style.display='none'">
+                <span class="testi-initials">RW</span>
+            </div>
+            <div class="testi-meta">
+                <span class="testi-name">Ryel W.</span>
+                <span class="testi-role">Medicine &amp; Surgery Student · Sister</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="testi-item fade-up">
+        <div class="testi-content">
+            <p class="testi-mark" aria-hidden="true">"</p>
+            <div class="testi-text-wrap" tabindex="0" role="button" aria-label="Flip to reveal the real testimonial">
+                <div class="testi-card-inner">
+                    <p class="testi-public">The creative work produced for our student associations was consistently professional, thoughtful, and well-received across the university community.</p>
+                    <div class="testi-reveal" aria-hidden="true">
+                        <p class="testi-real">His SCESA posters were everywhere on campus for months. I didn't know who made them until he sent me a LinkedIn request and then this form.</p>
+                    </div>
+                </div>
+                <span class="testi-flip-cue" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 1-15.5 6.3"/><path d="M3 12a9 9 0 0 1 15.5-6.3"/><polyline points="21 4 21 9 16 9"/><polyline points="3 20 3 15 8 15"/></svg>
+                    <span>Tap to flip</span>
+                </span>
             </div>
         </div>
         <div class="testi-who">
@@ -266,14 +345,39 @@
 ============================================== -->
 <section class="contact-section" id="contact">
     <div class="contact-inner">
-        <h2 class="contact-title fade-up" data-morph="LET'S BUILD">
-            <span class="morph-base">Let's<br>talk.</span>
+        <h2 class="contact-title typewriter-title fade-up">
+            <span class="tw-prefix">Let's</span>
+            <span class="tw-cycle">
+                <span class="tw-text" id="tw-text" data-words="build.|ship.|create.|design.|launch.|talk.|brand.">build.</span>
+                <span class="tw-caret" aria-hidden="true"></span>
+            </span>
         </h2>
 
         <div class="contact-body fade-up">
             <div class="contact-links">
                 <a href="mailto:nguitui.kamau@gmail.com" class="contact-email">nguitui.kamau@gmail.com</a>
-                <a href="mailto:nguitui.kamau@gmail.com" class="btn-white" data-magnetic>Let's Build →</a>
+                <a href="mailto:nguitui.kamau@gmail.com" class="cta-glass cta-desktop" data-magnetic>
+                    <span class="cta-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#4285F4" d="M2 6.4c0-.9.7-1.6 1.6-1.6h16.8c.9 0 1.6.7 1.6 1.6v11.2c0 .9-.7 1.6-1.6 1.6H3.6c-.9 0-1.6-.7-1.6-1.6V6.4z"/>
+                            <path fill="#FBBC04" d="M22 6.4v.4L12 13.5 2 6.8v-.4c0-.9.7-1.6 1.6-1.6h16.8c.9 0 1.6.7 1.6 1.6z"/>
+                            <path fill="#EA4335" d="M12 13.5L2 6.8v-.4c0-.6.3-1.1.8-1.4L12 11.4l9.2-6.4c.5.3.8.8.8 1.4v.4l-10 6.7z"/>
+                            <path fill="#34A853" d="M22 17.6c0 .9-.7 1.6-1.6 1.6H3.6c-.9 0-1.6-.7-1.6-1.6V6.8l10 6.7 10-6.7v10.8z"/>
+                        </svg>
+                    </span>
+                    <span class="cta-text">Let's Build</span>
+                    <span class="cta-arrow" aria-hidden="true">→</span>
+                </a>
+                <a href="https://wa.me/254741201961" class="cta-glass cta-mobile" target="_blank" rel="noopener" data-magnetic>
+                    <span class="cta-icon" aria-hidden="true">
+                        <svg viewBox="0 0 32 32" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#25D366" d="M16 .5C7.4.5.4 7.5.4 16.1c0 2.8.7 5.5 2.1 7.9L.3 32l8.3-2.2c2.3 1.3 4.9 2 7.5 2 8.6 0 15.6-7 15.6-15.6S24.6.5 16 .5z"/>
+                            <path fill="#fff" d="M23.6 19.7c-.4-.2-2.4-1.2-2.7-1.3-.4-.1-.6-.2-.9.2-.3.4-1 1.3-1.2 1.5-.2.2-.4.3-.8.1-.4-.2-1.7-.6-3.3-2-1.2-1.1-2-2.5-2.2-2.9-.2-.4 0-.6.2-.8.2-.2.4-.4.6-.6.2-.2.3-.4.4-.6.1-.2.1-.5 0-.7-.1-.2-.9-2.2-1.3-3-.3-.8-.7-.7-.9-.7h-.7c-.3 0-.7.1-1.1.5-.4.4-1.4 1.4-1.4 3.4 0 2 1.5 3.9 1.7 4.2.2.3 2.9 4.5 7.2 6.3 1 .4 1.8.7 2.4.9.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.5.3-.7.3-1.4.2-1.5-.1-.1-.4-.2-.8-.4z"/>
+                        </svg>
+                    </span>
+                    <span class="cta-text">Let's Build</span>
+                    <span class="cta-arrow" aria-hidden="true">→</span>
+                </a>
             </div>
         </div>
     </div>

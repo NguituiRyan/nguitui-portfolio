@@ -306,8 +306,10 @@
         overlay.className = 'morph-overlay';
         
         var label = document.createElement('span');
-        label.className   = 'morph-hover-text';
-        label.textContent = hoverText;
+        label.className = 'morph-hover-text';
+        // Allow <br> in data-morph for multi-line reveals matching the base layout.
+        // Source is always a static HTML attribute we control, so no XSS surface.
+        label.innerHTML = hoverText;
 
         overlay.appendChild(label);
         el.appendChild(overlay);
@@ -356,19 +358,345 @@
 
 
 /* ======================================================
+   3b. TYPEWRITER (contact title)
+   Cycles through "Let's <word>." with a typing+deleting
+   rhythm. Words come from data-words on the target span.
+   ====================================================== */
+(function initTypewriter() {
+    var el = document.getElementById('tw-text');
+    if (!el) return;
+
+    var raw = el.getAttribute('data-words') || '';
+    var words = raw.split('|').map(function (w) { return w.trim(); }).filter(Boolean);
+    if (!words.length) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        el.textContent = words[0];
+        return;
+    }
+
+    var wIdx = 0;
+    var cIdx = words[0].length; // start fully typed for the initial word
+    el.textContent = words[0];
+    var deleting = true;
+    var holdAfterType = 1700;
+    var holdAfterClear = 240;
+
+    function step() {
+        var word = words[wIdx];
+
+        if (!deleting) {
+            cIdx++;
+            el.textContent = word.slice(0, cIdx);
+            if (cIdx >= word.length) {
+                deleting = true;
+                setTimeout(step, holdAfterType);
+                return;
+            }
+            setTimeout(step, 75 + Math.random() * 60);
+        } else {
+            cIdx--;
+            el.textContent = word.slice(0, Math.max(0, cIdx));
+            if (cIdx <= 0) {
+                deleting = false;
+                wIdx = (wIdx + 1) % words.length;
+                setTimeout(step, holdAfterClear);
+                return;
+            }
+            setTimeout(step, 38);
+        }
+    }
+    setTimeout(step, holdAfterType);
+})();
+
+
+/* ======================================================
+   3c. TAP COUNTER — live, juicy, communal
+   Fetches a global tally via abacus.jasoncameron.dev,
+   increments on click with bump + particles + +1 float.
+   Falls back to localStorage if the API is unreachable.
+   ====================================================== */
+(function initTapCounter() {
+    var btn = document.getElementById('tap-counter-btn');
+    var numEl = document.getElementById('tap-counter-number');
+    var cueEl = document.getElementById('arcade-cue-text');
+    if (!btn || !numEl) return;
+
+    // Cheeky cue lines, sorted by min session-tap count.
+    // The longer you tap, the more ridiculous it gets.
+    var QUIPS = [
+        { min: 0,    options: ['press to play'] },
+        { min: 1,    options: ['nice', 'oh hello', 'mm'] },
+        { min: 4,    options: ["you're into it", 'keep going', 'lovely'] },
+        { min: 10,   options: ['still tapping?', 'ok ok', 'addicted yet?'] },
+        { min: 25,   options: ["i'm flattered", 'easy tiger', 'wow'] },
+        { min: 60,   options: ['ryan sees u', 'go outside', 'log off'] },
+        { min: 120,  options: ['this is your job now', 'genuinely concerned'] },
+        { min: 250,  options: ['you win nothing', 'earn a coffee', 'touch grass'] }
+    ];
+    function getQuip(count) {
+        var tier = QUIPS[0];
+        for (var i = QUIPS.length - 1; i >= 0; i--) {
+            if (count >= QUIPS[i].min) { tier = QUIPS[i]; break; }
+        }
+        var opts = tier.options;
+        return opts[Math.floor(Math.random() * opts.length)];
+    }
+    var sessionTaps = 0;
+    var lastQuip = '';
+    function flashQuip() {
+        if (!cueEl) return;
+        var next = getQuip(sessionTaps);
+        // Avoid same quip twice in a row when the tier has multiple options
+        var safety = 0;
+        while (next === lastQuip && safety++ < 4) next = getQuip(sessionTaps);
+        lastQuip = next;
+        cueEl.textContent = next;
+        cueEl.classList.remove('is-flashing');
+        void cueEl.offsetWidth; // restart animation
+        cueEl.classList.add('is-flashing');
+    }
+
+    var NS = 'beyond-canvas';
+    var KEY = 'portfolio-taps';
+    var GET_URL = 'https://abacus.jasoncameron.dev/get/' + NS + '/' + KEY;
+    var HIT_URL = 'https://abacus.jasoncameron.dev/hit/' + NS + '/' + KEY;
+    var LS_KEY = 'bc_tap_count_v1';
+
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var current = 0;
+    var apiOK = true;
+    var pendingHits = 0;
+    var hitTimer = null;
+
+    function format(n) {
+        // Arcade-style: pad to 4 digits min so the readout has a fixed width feel.
+        // Beyond 9999, fall back to comma-grouped natural width.
+        var v = Math.max(0, Math.round(n));
+        if (v < 10000) return String(v).padStart(4, '0');
+        return v.toLocaleString('en-US');
+    }
+
+    function setNumber(n) {
+        numEl.textContent = format(Math.max(0, Math.round(n)));
+    }
+
+    // Animate 0 → target on first paint
+    function countUpTo(target) {
+        if (reduceMotion || target <= 0) {
+            setNumber(target);
+            return;
+        }
+        var start = performance.now();
+        var dur = Math.min(1400, 600 + Math.log10(Math.max(10, target)) * 220);
+        var from = 0;
+        function tick(now) {
+            var t = Math.min(1, (now - start) / dur);
+            var eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
+            setNumber(from + (target - from) * eased);
+            if (t < 1) requestAnimationFrame(tick);
+            else setNumber(target);
+        }
+        requestAnimationFrame(tick);
+    }
+
+    // Initial fetch — try API, fall back to localStorage, fall back to 0
+    function loadInitial() {
+        var stored = parseInt(localStorage.getItem(LS_KEY) || '0', 10) || 0;
+        if (!('fetch' in window)) {
+            current = stored;
+            countUpTo(current);
+            apiOK = false;
+            return;
+        }
+        fetch(GET_URL, { method: 'GET', cache: 'no-store' })
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .then(function (data) {
+                if (data && typeof data.value === 'number') {
+                    current = Math.max(stored, data.value);
+                    countUpTo(current);
+                } else {
+                    apiOK = false;
+                    current = stored;
+                    countUpTo(current);
+                }
+            })
+            .catch(function () {
+                apiOK = false;
+                current = stored;
+                countUpTo(current);
+            });
+    }
+
+    // Batch API hits so rapid taps don't spam the network
+    function flushHits() {
+        if (!apiOK || pendingHits <= 0) return;
+        var batch = pendingHits;
+        pendingHits = 0;
+        // abacus.jasoncameron.dev increments by 1 per call. For batches >1
+        // we issue parallel hits — small portfolio, not worth queueing logic.
+        for (var i = 0; i < batch; i++) {
+            fetch(HIT_URL, { method: 'GET', cache: 'no-store' }).catch(function () {
+                apiOK = false;
+            });
+        }
+    }
+    function queueHit() {
+        pendingHits++;
+        if (hitTimer) clearTimeout(hitTimer);
+        hitTimer = setTimeout(flushHits, 350);
+    }
+
+    // Visual: bump the number
+    function bumpNumber() {
+        if (reduceMotion) return;
+        numEl.classList.remove('is-bumping');
+        // force reflow so animation restarts on rapid taps
+        void numEl.offsetWidth;
+        numEl.classList.add('is-bumping');
+    }
+
+    // Visual: spawn +1 at click coords
+    function spawnPlusOne(x, y) {
+        if (reduceMotion) return;
+        var p = document.createElement('span');
+        p.className = 'tap-plus';
+        p.textContent = '+1';
+        p.style.left = x + 'px';
+        p.style.top = y + 'px';
+        btn.appendChild(p);
+        setTimeout(function () { p.remove(); }, 1100);
+    }
+
+    // Visual: spawn 7 particles bursting outward
+    var particleColors = [
+        'rgba(255, 200, 120, 0.95)',
+        'rgba(255, 230, 180, 0.95)',
+        'rgba(160, 200, 255, 0.9)',
+        'rgba(255, 180, 200, 0.9)',
+        '#f5ede0'
+    ];
+    function spawnParticles(x, y) {
+        if (reduceMotion) return;
+        var count = 7;
+        for (var i = 0; i < count; i++) {
+            var p = document.createElement('span');
+            p.className = 'tap-particle';
+            var angle = (Math.PI * 2 * i) / count + (Math.random() * 0.7 - 0.35);
+            var dist = 60 + Math.random() * 60;
+            p.style.setProperty('--dx', (Math.cos(angle) * dist).toFixed(1) + 'px');
+            p.style.setProperty('--dy', (Math.sin(angle) * dist).toFixed(1) + 'px');
+            p.style.left = x + 'px';
+            p.style.top = y + 'px';
+            p.style.background = particleColors[i % particleColors.length];
+            btn.appendChild(p);
+            (function (node) {
+                setTimeout(function () { node.remove(); }, 950);
+            })(p);
+        }
+    }
+
+    // Click handler — local optimistic increment + visuals + queued API hit
+    var lastTap = 0;
+    var pressTimer = null;
+    function handleTap(ev) {
+        var now = performance.now();
+        if (now - lastTap < 40) return; // hard floor against repeat-fire
+        lastTap = now;
+
+        current += 1;
+        sessionTaps += 1;
+        setNumber(current);
+        bumpNumber();
+        flashQuip();
+        localStorage.setItem(LS_KEY, String(current));
+
+        // Hold the "pressed" state long enough that keyboard/programmatic
+        // taps still feel like a real press, not just a flicker.
+        btn.classList.add('is-pressed');
+        if (pressTimer) clearTimeout(pressTimer);
+        pressTimer = setTimeout(function () {
+            btn.classList.remove('is-pressed');
+        }, 130);
+
+        var rect = btn.getBoundingClientRect();
+        var x, y;
+        if (ev && ev.clientX != null) {
+            x = ev.clientX - rect.left;
+            y = ev.clientY - rect.top;
+        } else {
+            x = rect.width / 2;
+            y = rect.height / 2;
+        }
+        spawnPlusOne(x, y);
+        spawnParticles(x, y);
+
+        if (navigator.vibrate) {
+            try { navigator.vibrate(8); } catch (e) {}
+        }
+
+        queueHit();
+    }
+
+    btn.addEventListener('click', handleTap);
+    btn.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Enter' || ev.key === ' ') {
+            ev.preventDefault();
+            handleTap(ev);
+        }
+    });
+
+    // Make sure any unsent hits go out before unload
+    window.addEventListener('pagehide', flushHits);
+    window.addEventListener('beforeunload', flushHits);
+
+    loadInitial();
+})();
+
+
+/* ======================================================
    4. TESTIMONIAL CIRCLE REVEAL
-   Adapted from MagneticText React component.
-   clip-path circle follows cursor over each testimonial;
-   reveals the real (funny) quote beneath the public one.
+   Desktop: clip-path circle follows cursor.
+   Touch: tap toggles full reveal (CSS .is-revealed class).
+   Auto-demo: first testimonial plays a one-shot reveal when
+   it scrolls into view so users learn the interaction.
    ====================================================== */
 (function initTestimonialReveal() {
-    document.querySelectorAll('.testi-text-wrap').forEach(function(wrap) {
+    var isTouch = window.matchMedia('(hover: none)').matches
+        || ('ontouchstart' in window && navigator.maxTouchPoints > 0);
+
+    var wraps = Array.from(document.querySelectorAll('.testi-text-wrap'));
+    if (!wraps.length) return;
+
+    wraps.forEach(function(wrap, i) {
         var reveal = wrap.querySelector('.testi-reveal');
         if (!reveal) return;
 
+        if (isTouch) {
+            // Mobile path: tap flips the 3D card. CSS handles the rotateY transition.
+            var hasInteracted = false;
+            function flip() {
+                wrap.classList.toggle('is-flipped');
+                if (!hasInteracted) {
+                    hasInteracted = true;
+                    if (navigator.vibrate) { try { navigator.vibrate(8); } catch (e) {} }
+                }
+            }
+            wrap.addEventListener('click', flip);
+            wrap.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    flip();
+                }
+            });
+            return;
+        }
+
+        // Desktop: cursor-following circle
         var mousePos   = { x: 0, y: 0 };
         var currentPos = { x: 0, y: 0 };
         var r = 0, targetR = 0;
+        var demoActive = false;
 
         function lerp(a, b, f) { return a + (b - a) * f; }
 
@@ -383,24 +711,68 @@
         requestAnimationFrame(animate);
 
         wrap.addEventListener('mousemove', function(e) {
+            if (demoActive) return;
             var rect = wrap.getBoundingClientRect();
             mousePos.x = e.clientX - rect.left;
             mousePos.y = e.clientY - rect.top;
         });
 
         wrap.addEventListener('mouseenter', function(e) {
+            if (demoActive) return;
             var rect = wrap.getBoundingClientRect();
             mousePos.x = e.clientX - rect.left;
             mousePos.y = e.clientY - rect.top;
             currentPos.x = mousePos.x;
             currentPos.y = mousePos.y;
-            targetR = 290;
+            targetR = 360;
         });
 
         wrap.addEventListener('mouseleave', function() {
+            if (demoActive) return;
             targetR = 0;
         });
+
+        // Expose demo hooks for the IntersectionObserver below
+        wrap._playDemo = function() {
+            if (demoActive) return;
+            demoActive = true;
+            var rect = wrap.getBoundingClientRect();
+            mousePos.x = rect.width / 2;
+            mousePos.y = rect.height / 2;
+            currentPos.x = mousePos.x;
+            currentPos.y = mousePos.y;
+            targetR = 480;
+            setTimeout(function() { targetR = 0; }, 1400);
+            setTimeout(function() { demoActive = false; }, 2400);
+        };
     });
+
+    // Auto-demo first testimonial when section enters view.
+    // Mobile: a one-shot flip-and-back so users see the gesture.
+    // Desktop: a soft cursor-circle reveal.
+    var firstWrap = wraps[0];
+    if (firstWrap && 'IntersectionObserver' in window) {
+        var demoed = false;
+        var io = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting && !demoed) {
+                    demoed = true;
+                    setTimeout(function() {
+                        if (isTouch) {
+                            firstWrap.classList.add('is-flipped');
+                            setTimeout(function() {
+                                firstWrap.classList.remove('is-flipped');
+                            }, 1900);
+                        } else if (typeof firstWrap._playDemo === 'function') {
+                            firstWrap._playDemo();
+                        }
+                    }, 500);
+                    io.unobserve(firstWrap);
+                }
+            });
+        }, { threshold: 0.55 });
+        io.observe(firstWrap);
+    }
 })();
 
 
@@ -952,27 +1324,97 @@ if (mTrack) {
 
 /* ======================================================
    13. ZOOM PARALLAX (Vanilla port of 21.dev ZoomParallax)
+   Force auto-scrolls through the zoom in the direction of
+   travel — both downward (entering from above) and upward
+   (re-entering from below). Cannot be aborted mid-flight;
+   the only way out is to wait for it to land.
    ====================================================== */
 (function initZoomParallax() {
     var ctn = document.getElementById('zoom-parallax');
     if (!ctn) return;
-    
+
     var layers = Array.from(ctn.querySelectorAll('.zoom-layer'));
     if (!layers.length) return;
 
+    var isAutoScrolling = false;
+    var inZoomPhase = false;
+    var prevTop = null;
+    var prevBottom = null;
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function easeInOutCubic(t) {
+        return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+    }
+
+    // direction: 'down' scrolls past the bottom of the zoom; 'up' scrolls back above its top
+    function autoScrollThroughZoom(direction) {
+        if (isAutoScrolling || reducedMotion) return;
+
+        var rect = ctn.getBoundingClientRect();
+        var vh = window.innerHeight;
+        var startY = window.pageYOffset || document.documentElement.scrollTop;
+
+        var distance;
+        if (direction === 'down') {
+            // Travel until the section's bottom hits the viewport bottom (zoom phase ends).
+            distance = (rect.bottom - vh) + 8;
+        } else {
+            // Travel until the section's top is just below the viewport top (zoom phase ends going up).
+            distance = rect.top - 8; // rect.top is negative here, so this is a negative distance
+        }
+        if (Math.abs(distance) <= 40) return;
+
+        isAutoScrolling = true;
+
+        var startTime = performance.now();
+        var duration = Math.min(2600, 700 + Math.abs(distance) * 0.5);
+
+        function step(now) {
+            var t = Math.min(1, (now - startTime) / duration);
+            var eased = easeInOutCubic(t);
+            window.scrollTo(0, startY + distance * eased);
+
+            if (t < 1) {
+                requestAnimationFrame(step);
+            } else {
+                isAutoScrolling = false;
+            }
+        }
+        requestAnimationFrame(step);
+    }
+
     function tick() {
         var rect = ctn.getBoundingClientRect();
+        var vh = window.innerHeight;
         var progress = 0;
-        
+        var nowInZoom = rect.top <= 0 && rect.bottom > vh;
+
+        // Trigger on transitions INTO the zoom phase from either direction.
+        // Skip the first sample so a mid-zoom reload doesn't fire spuriously.
+        if (!isAutoScrolling && prevTop !== null && prevBottom !== null && !inZoomPhase && nowInZoom) {
+            // Entering downward: section's top crossed the viewport top.
+            if (prevTop > 0) {
+                autoScrollThroughZoom('down');
+            }
+            // Entering upward: section's bottom crossed the viewport bottom.
+            else if (prevBottom <= vh) {
+                autoScrollThroughZoom('up');
+            }
+        }
+
+        inZoomPhase = nowInZoom;
+        prevTop = rect.top;
+        prevBottom = rect.bottom;
+
         if (rect.top <= 0) {
-            var totalScroll = rect.height - window.innerHeight;
+            var totalScroll = rect.height - vh;
             if (totalScroll > 0) {
                 progress = Math.max(0, Math.min(1, -rect.top / totalScroll));
             }
         }
-        
+
         var isMob = window.innerWidth <= 768;
-        
+
         layers.forEach(function(layer) {
             var targetScale = parseFloat(layer.getAttribute('data-scale-target')) || 4;
             if (isMob) {

@@ -318,23 +318,24 @@ button,
    ====================================================== */
 .hero {
     position: relative;
-    min-height: 92svh;
+    min-height: 74svh;
     overflow: hidden;
 }
 
 .hero-grid {
     display: grid;
     grid-template-columns: 54fr 46fr;
-    min-height: 92svh;
+    min-height: 74svh;
+    align-items: stretch;
 }
 
 /* LEFT */
 .hero-left {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 28px;
-    padding: calc(64px + var(--nav-h)) var(--pad-x) 64px clamp(48px, 10vw, 140px);
+    justify-content: flex-start;
+    gap: 22px;
+    padding: calc(28px + var(--nav-h)) var(--pad-x) 40px clamp(48px, 10vw, 140px);
     border-right: none;
     position: relative;
     z-index: 2;
@@ -378,28 +379,54 @@ button,
     margin-top: 24px;
 }
 
-.hero-cta {
+/* Glass CTA — primary "Let's Build" with brand-coloured icon */
+.cta-glass {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 16px 36px;
-    border: none;
+    gap: 12px;
+    padding: 14px 26px 14px 18px;
     border-radius: 999px;
     font-family: var(--font-sans);
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: #000;
-    background: #fff;
-    box-shadow: 0 0 24px rgba(255,255,255,0.15);
-    transition: background .25s, transform .25s var(--ease), box-shadow .25s;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: .02em;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(18px) saturate(1.4);
+    -webkit-backdrop-filter: blur(18px) saturate(1.4);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition: background .25s var(--ease), border-color .25s var(--ease), transform .25s var(--ease);
 }
 
-.hero-cta:hover {
-    background: #eaeaea;
-    transform: translateY(-3px) scale(1.03);
-    box-shadow: 0 12px 32px rgba(255,255,255,0.25);
+.cta-glass:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.cta-glass .cta-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 999px;
+    background: #fff;
+    flex-shrink: 0;
+}
+
+.cta-glass .cta-icon svg {
+    display: block;
+}
+
+.cta-glass .cta-arrow {
+    font-size: 16px;
+    transition: transform .25s var(--ease);
+}
+
+.cta-glass:hover .cta-arrow {
+    transform: translateX(3px);
 }
 
 .cta-mobile { display: none; }
@@ -407,22 +434,31 @@ button,
 /* Scroll hint */
 .scroll-hint {
     position: absolute;
-    bottom: 36px;
+    bottom: 22px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0;
+    gap: 8px;
     z-index: 3;
     opacity: 0;
     animation: heroIn .8s var(--ease) .5s forwards;
 }
 
+.scroll-hint-label {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, .38);
+}
+
 .scroll-hint-line {
     display: block;
     width: 1px;
-    height: 52px;
+    height: 36px;
     background: rgba(255, 255, 255, .3);
     transform-origin: top center;
     animation: scrollDrop 2s ease-in-out 1s infinite;
@@ -584,7 +620,13 @@ button,
 .about-skills {
     padding-top: 40px;
     border-top: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 56px;
+    align-items: start;
 }
+.skills-col { min-width: 0; }
+.arcade-col { display: flex; flex-direction: column; }
 
 .col-label {
     font-family: var(--font-sans);
@@ -618,6 +660,276 @@ button,
     color: var(--text);
     border-color: rgba(255, 255, 255, .3);
 }
+
+
+/* ======================================================
+   ARCADE TAP BUTTON — gamified press button beside skills
+   Real depth via dark "side" shadow that compresses on press.
+   ====================================================== */
+.arcade-btn {
+    --face-1:   #f5ede0;
+    --face-2:   #d8cfbe;
+    --rim:      #0a0a0a;
+    --depth:    7px;
+    position: relative;
+    display: block;
+    width: 280px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    color: var(--rim);
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    isolation: isolate;
+    transform: translateY(0);
+    transition: transform .12s ease;
+    will-change: transform;
+}
+
+.arcade-face {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 14px 18px 14px;
+    background: linear-gradient(180deg, var(--face-1) 0%, var(--face-2) 100%);
+    border: 1.5px solid var(--rim);
+    border-radius: 18px;
+    box-shadow:
+        0 var(--depth) 0 0 var(--rim),                     /* the "side" of the button */
+        0 calc(var(--depth) + 6px) 18px rgba(0, 0, 0, 0.45), /* drop shadow */
+        inset 0 2px 0 rgba(255, 255, 255, 0.55),            /* top highlight */
+        inset 0 -2px 0 rgba(0, 0, 0, 0.08);                 /* bottom shading */
+    transition: box-shadow .12s ease;
+}
+
+/* Hover — lifts a touch, shadow grows */
+.arcade-btn:hover {
+    transform: translateY(-2px);
+}
+.arcade-btn:hover .arcade-face {
+    box-shadow:
+        0 calc(var(--depth) + 2px) 0 0 var(--rim),
+        0 calc(var(--depth) + 12px) 26px rgba(0, 0, 0, 0.55),
+        inset 0 2px 0 rgba(255, 255, 255, 0.65),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Press — button compresses into its own shadow */
+.arcade-btn:active,
+.arcade-btn.is-pressed {
+    transform: translateY(var(--depth));
+    transition-duration: .06s;
+}
+.arcade-btn:active .arcade-face,
+.arcade-btn.is-pressed .arcade-face {
+    box-shadow:
+        0 1px 0 0 var(--rim),
+        0 3px 8px rgba(0, 0, 0, 0.35),
+        inset 0 2px 0 rgba(255, 255, 255, 0.4),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+    transition-duration: .06s;
+}
+
+.arcade-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--font-sans);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: .18em;
+    color: var(--rim);
+}
+
+.arcade-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.arcade-live-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #c43d2e;
+    box-shadow: 0 0 0 0 rgba(196, 61, 46, 0.65);
+    animation: arcadeLivePulse 1.4s ease-out infinite;
+}
+@keyframes arcadeLivePulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(196, 61, 46, 0.65); }
+    50%      { box-shadow: 0 0 0 6px rgba(196, 61, 46, 0); }
+}
+
+.arcade-label {
+    color: rgba(10, 10, 10, 0.55);
+}
+
+.arcade-number-wrap {
+    position: relative;
+    display: block;
+    overflow: visible;
+}
+
+.col-label-meta {
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 400;
+    color: var(--text3);
+    margin-left: 4px;
+}
+
+.arcade-units {
+    display: block;
+    margin-top: -4px;
+    font-family: var(--font-sans);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: rgba(10, 10, 10, 0.42);
+}
+
+.arcade-cue-text {
+    display: inline-block;
+    transition: opacity .18s ease;
+}
+.arcade-cue-text.is-flashing {
+    animation: arcadeQuipFlash .42s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes arcadeQuipFlash {
+    0%   { opacity: 0; transform: translateY(3px); }
+    100% { opacity: 1; transform: translateY(0);   }
+}
+
+/* Cute "cert. ryan™" stamp angled on the bottom-right of the button */
+.arcade-stamp {
+    position: absolute;
+    right: -8px;
+    bottom: -10px;
+    z-index: 6;
+    transform: rotate(-6deg);
+    padding: 4px 8px;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 10px;
+    font-weight: 700;
+    color: #f5ede0;
+    background: #c43d2e;
+    border: 1.5px solid #0a0a0a;
+    border-radius: 4px;
+    box-shadow: 0 2px 0 0 #0a0a0a;
+    pointer-events: none;
+    letter-spacing: 0.02em;
+    transition: transform .25s var(--ease);
+}
+.arcade-btn:hover .arcade-stamp {
+    transform: rotate(-3deg) translateY(-2px);
+}
+
+/* Tiny disclaimer line under the button */
+.arcade-foot {
+    margin-top: 18px;
+    max-width: 280px;
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--text3);
+    letter-spacing: 0.02em;
+}
+
+.arcade-number {
+    display: block;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 56px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--rim);
+    font-variant-numeric: tabular-nums;
+    padding: 2px 0;
+    transition: transform .12s ease;
+}
+.arcade-number.is-bumping {
+    animation: arcadeBump .28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes arcadeBump {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.arcade-cue {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+.arcade-cue svg { display: block; }
+
+.arcade-key {
+    background: var(--rim);
+    color: var(--face-1);
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    box-shadow: inset 0 -2px 0 rgba(255, 255, 255, 0.12);
+}
+
+/* ---------- Click effects (particles + +1 floater) ---------- */
+.tap-plus {
+    position: absolute;
+    z-index: 5;
+    pointer-events: none;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--rim, #0a0a0a);
+    background: #f5ede0;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1.5px solid #0a0a0a;
+    box-shadow: 0 3px 0 0 #0a0a0a;
+    transform: translate(-50%, -50%);
+    animation: tapPlusFloat 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes tapPlusFloat {
+    0%   { transform: translate(-50%, -50%)  scale(0.6); opacity: 0; }
+    18%  { transform: translate(-50%, -65%)  scale(1.05); opacity: 1; }
+    100% { transform: translate(-50%, -200%) scale(0.85); opacity: 0; }
+}
+.tap-particle {
+    position: absolute;
+    z-index: 4;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    animation: tapParticleBurst .85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes tapParticleBurst {
+    0%   { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.2); opacity: 0; }
+}
+
+/* ---------- Mobile: stack columns, full-width button ---------- */
+@media (max-width: 768px) {
+    .about-skills {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+    .arcade-btn { width: 100%; max-width: 360px; }
+    .arcade-number { font-size: 48px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .arcade-live-dot,
+    .arcade-number.is-bumping { animation: none; }
+}
+
 
 /* ======================================================
    ZOOM PARALLAX
@@ -876,8 +1188,8 @@ button,
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: #FFFFFF;
-    color: #0A0A0A;
+    background: transparent;
+    color: #fff;
     display: inherit;
     align-items: inherit;
     justify-content: inherit;
@@ -891,17 +1203,38 @@ button,
     font-family: var(--font-display);
     font-size: 24px;
     font-weight: 700;
-    color: #0A0A0A;
-    white-space: nowrap;
+    color: #fff;
     letter-spacing: -0.02em;
 }
 
 .morph-base {
+    position: relative;
+    z-index: 2;
     transition: opacity .35s;
 }
 
+.morph-echo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    pointer-events: none;
+    color: rgba(255, 255, 255, .1);
+    transition: color .35s, opacity .35s;
+    /* match base typography exactly via inheritance */
+    font: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
+    /* nudge so the layered word reads as a separate plane */
+    transform: translate(0.04em, 0.06em);
+}
+
 [data-morph]:hover .morph-base {
-    opacity: .5;
+    opacity: .35;
+}
+
+[data-morph]:hover .morph-echo {
+    color: rgba(255, 255, 255, .22);
 }
 
 /* ======================================================
@@ -909,7 +1242,7 @@ button,
    ====================================================== */
 .testi-section {
     border-top: 1px solid var(--border);
-    padding: 80px var(--pad-x) 100px;
+    padding: 96px var(--pad-x) 120px;
     max-width: var(--max-w);
     margin-inline: auto;
 }
@@ -927,9 +1260,11 @@ button,
 .testi-hint-mobile { display: none; }
 
 .testi-item {
-    display: flex;
-    flex-direction: column;
-    padding: 72px 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 72px;
+    padding: 96px 0;
     border-bottom: 1px solid var(--border);
     cursor: default;
     user-select: none;
@@ -939,34 +1274,47 @@ button,
     border-top: 1px solid var(--border);
 }
 
+.testi-content {
+    min-width: 0;
+}
+
 .testi-mark {
     font-family: var(--font-display);
     font-style: italic;
-    font-size: clamp(64px, 7vw, 96px);
+    font-size: clamp(72px, 8vw, 120px);
     line-height: 1;
-    color: rgba(255, 255, 255, .12);
-    margin-bottom: 16px;
-    max-width: 820px;
+    color: rgba(255, 255, 255, .14);
+    margin-bottom: 12px;
+    max-width: 920px;
 }
 
 .testi-text-wrap {
     position: relative;
     cursor: none;
-    max-width: 820px;
-    margin-bottom: 40px;
+    max-width: 920px;
+    outline: none;
+    border-radius: 4px;
+}
+
+.testi-text-wrap:focus-visible {
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.25);
+}
+
+.testi-card-inner {
+    position: relative;
 }
 
 .testi-public {
     font-family: var(--font-display);
     font-style: italic;
-    font-size: clamp(20px, 2.6vw, 36px);
+    font-size: clamp(28px, 3.2vw, 48px);
     font-weight: 400;
-    line-height: 1.38;
+    line-height: 1.34;
     letter-spacing: -0.02em;
     color: var(--text);
 }
 
-/* Reveal overlay — circle follows cursor, shows the truth */
+/* Reveal overlay — circle follows cursor on desktop, flips as a card back-face on mobile */
 .testi-reveal {
     position: absolute;
     inset: 0;
@@ -974,28 +1322,116 @@ button,
     clip-path: circle(0px at 50% 50%);
     pointer-events: none;
     will-change: clip-path;
+    border-radius: 4px;
 }
 
 .testi-real {
     font-family: var(--font-display);
     font-style: italic;
-    font-size: clamp(20px, 2.6vw, 36px);
+    font-size: clamp(28px, 3.2vw, 48px);
     font-weight: 400;
-    line-height: 1.38;
+    line-height: 1.34;
     letter-spacing: -0.02em;
     color: #1a1209;
 }
 
+/* Flip cue (mobile only) — pulsing pill that screams "tap me" */
+.testi-flip-cue {
+    display: none;
+    position: absolute;
+    right: 0;
+    bottom: -22px;
+    z-index: 6;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px 8px 10px;
+    background: #f5ede0;
+    color: #1a1209;
+    border-radius: 999px;
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    pointer-events: none;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+    animation: flipCuePulse 2.4s ease-in-out infinite;
+    transition: background .25s, color .25s, opacity .35s;
+}
+
+.testi-flip-cue svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+@keyframes flipCuePulse {
+    0%, 100% { transform: scale(1) translateY(0); }
+    50%      { transform: scale(1.06) translateY(-2px); }
+}
+
+/* Mobile: the whole card becomes a 3D flip card */
+@media (hover: none) {
+    .testi-text-wrap {
+        cursor: pointer;
+        perspective: 1400px;
+        padding: 4px;
+    }
+
+    .testi-card-inner {
+        transform-style: preserve-3d;
+        transition: transform .8s cubic-bezier(.5, .05, .2, 1);
+        min-height: 1px;
+    }
+
+    .testi-text-wrap.is-flipped .testi-card-inner {
+        transform: rotateY(180deg);
+    }
+
+    .testi-public,
+    .testi-reveal {
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+    }
+
+    .testi-public {
+        position: relative;
+        z-index: 1;
+    }
+
+    .testi-reveal {
+        clip-path: none !important;
+        transform: rotateY(180deg);
+        display: flex;
+        align-items: center;
+        padding: 24px 28px;
+        border-radius: 12px;
+        box-shadow: 0 14px 38px rgba(0, 0, 0, 0.35);
+        pointer-events: none;
+    }
+
+    .testi-flip-cue {
+        display: inline-flex;
+    }
+
+    .testi-text-wrap.is-flipped .testi-flip-cue {
+        background: rgba(255, 255, 255, 0.14);
+        color: #fff;
+    }
+}
+
 .testi-who {
     display: flex;
-    align-items: center;
-    gap: 16px;
-    max-width: 820px;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+    gap: 14px;
+    flex-shrink: 0;
 }
 
 .testi-avatar {
-    width: 52px;
-    height: 52px;
+    width: 84px;
+    height: 84px;
     border-radius: 50%;
     border: 1px solid var(--border2);
     background: rgba(255, 255, 255, .07);
@@ -1027,6 +1463,7 @@ button,
 .testi-meta {
     display: flex;
     flex-direction: column;
+    align-items: flex-end;
     gap: 4px;
 }
 
@@ -1152,6 +1589,7 @@ button,
 }
 
 .contact-title {
+    position: relative;
     font-family: var(--font-display);
     font-style: italic;
     font-size: clamp(80px, 14vw, 200px);
@@ -1161,13 +1599,42 @@ button,
     margin-bottom: 64px;
 }
 
-/* JS handles radius */
-.contact-title .morph-hover-text {
-    font-size: clamp(80px, 14vw, 200px);
-    font-style: italic;
-    font-weight: 700;
-    line-height: .88;
-    letter-spacing: -0.05em;
+/* Typewriter contact title: "Let's" stacked above a cycling word */
+.typewriter-title {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+}
+
+.tw-prefix {
+    display: block;
+}
+
+.tw-cycle {
+    display: inline-flex;
+    align-items: baseline;
+    /* leave room for the longest word so layout doesn't shift mid-typing */
+    min-width: 4ch;
+}
+
+.tw-text {
+    /* inherits italic from .contact-title */
+    white-space: pre;
+}
+
+.tw-caret {
+    display: inline-block;
+    width: 0.06em;
+    height: 0.7em;
+    background: currentColor;
+    margin-left: 0.06em;
+    transform: translateY(0.04em);
+    animation: twCaretBlink 0.85s steps(2, end) infinite;
+}
+
+@keyframes twCaretBlink {
+    50% { opacity: 0; }
 }
 
 .contact-body {
@@ -1210,6 +1677,7 @@ button,
     border-color: rgba(255, 255, 255, .4);
 }
 
+/* Legacy white button — superseded by .cta-glass */
 .btn-white {
     display: inline-flex;
     align-items: center;
@@ -1437,12 +1905,40 @@ button,
     }
 
     .testi-item {
-        padding: 48px 0;
+        grid-template-columns: 1fr;
+        gap: 32px;
+        padding: 56px 0 72px;
+    }
+
+    .testi-who {
+        flex-direction: row;
+        align-items: center;
+        text-align: left;
+        gap: 14px;
+        align-self: flex-start;
+    }
+
+    .testi-meta {
+        align-items: flex-start;
+    }
+
+    .testi-avatar {
+        width: 56px;
+        height: 56px;
+    }
+
+    .testi-mark {
+        font-size: clamp(64px, 16vw, 96px);
     }
 
     .testi-public,
     .testi-real {
-        font-size: clamp(18px, 5vw, 26px);
+        font-size: clamp(22px, 5.5vw, 30px);
+        line-height: 1.36;
+    }
+
+    .testi-section {
+        padding: 64px var(--pad-x) 80px;
     }
 
     .card-stack-stage { height: 360px; }
