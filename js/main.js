@@ -1123,6 +1123,7 @@ document.querySelectorAll('.fade-up').forEach(function(el) { fadeObs.observe(el)
     ].join(', ');
 
     var ctn = document.createElement('div');
+    ctn.className = 'falling-pattern-ctn';
     ctn.style.cssText = "position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; opacity: 0; transition: opacity 1.5s ease 0.5s;";
     
     var layer = document.createElement('div');
@@ -1194,3 +1195,40 @@ document.querySelectorAll('.fade-up').forEach(function(el) { fadeObs.observe(el)
 /* ======================================================
    13. STICKY SCROLL GALLERY — no JS needed, pure CSS sticky
    ====================================================== */
+
+
+/* ======================================================
+   14. LIGHT / DARK MODE TOGGLE
+   Persists preference in localStorage. Respects system
+   preference on first visit, then user choice overrides.
+   ====================================================== */
+(function initThemeToggle() {
+    var toggle = document.getElementById('theme-toggle');
+    if (!toggle) return;
+
+    var LS_KEY = 'bc_theme';
+    var html = document.documentElement;
+
+    function applyTheme(theme) {
+        if (theme === 'light') {
+            html.classList.add('light');
+        } else {
+            html.classList.remove('light');
+        }
+    }
+
+    // Determine initial theme
+    var stored = localStorage.getItem(LS_KEY);
+    if (stored) {
+        applyTheme(stored);
+    } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+        applyTheme('light');
+    }
+
+    toggle.addEventListener('click', function() {
+        var isLight = html.classList.contains('light');
+        var next = isLight ? 'dark' : 'light';
+        applyTheme(next);
+        localStorage.setItem(LS_KEY, next);
+    });
+})();
