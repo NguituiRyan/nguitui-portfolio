@@ -1401,7 +1401,7 @@ button,
 }
 
 /* Mobile: the whole card becomes a 3D flip card */
-@media (hover: none) {
+@media (hover: none), (pointer: coarse), (max-width: 768px) {
     .testi-text-wrap {
         cursor: pointer;
         perspective: 1400px;

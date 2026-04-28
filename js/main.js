@@ -669,7 +669,9 @@
    ====================================================== */
 (function initTestimonialReveal() {
     var isTouch = window.matchMedia('(hover: none)').matches
-        || ('ontouchstart' in window && navigator.maxTouchPoints > 0);
+        || window.matchMedia('(pointer: coarse)').matches
+        || ('ontouchstart' in window && navigator.maxTouchPoints > 0)
+        || window.innerWidth <= 768;
 
     var wraps = Array.from(document.querySelectorAll('.testi-text-wrap'));
     if (!wraps.length) return;
