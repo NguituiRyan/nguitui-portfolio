@@ -104,6 +104,9 @@ html.light .m-social a:hover { color: #0a0a0a; }
 html.light .hero-title { color: var(--text); }
 html.light .portrait-img { filter: grayscale(0%); }
 
+/* Hero tagline */
+html.light .hero-tagline { color: rgba(10, 10, 10, 0.55); }
+
 /* Scroll hint */
 html.light .scroll-hint-label { color: rgba(10, 10, 10, .38); }
 html.light .scroll-hint-line { background: rgba(10, 10, 10, .3); }
@@ -165,10 +168,12 @@ html.light .magnetic-cursor {
     background: #0a0a0a;
 }
 
-/* About section — slightly darker cream to stand out in light mode */
+/* About section — cream background in light mode */
 html.light .about-section {
     background: #ebe4d6;
 }
+html.light .about-desc { color: #0a0a0a; }
+html.light .skill-pill:hover { border-color: rgba(10, 10, 10, .35); }
 
 /* Falling pattern — hide in light mode */
 html.light .falling-pattern-ctn { opacity: 0 !important; }
@@ -716,8 +721,6 @@ html.light .theme-icon-sun { display: block; }
 .about-section {
     border-top: 1px solid var(--border);
     padding: 100px var(--pad-x);
-    background: #f5ede0;
-    color: #0a0a0a;
 }
 
 .about-inner {
@@ -744,7 +747,7 @@ html.light .theme-icon-sun { display: block; }
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: .12em;
-    color: rgba(10, 10, 10, 0.45);
+    color: var(--text3);
 }
 
 .about-desc {
@@ -752,7 +755,7 @@ html.light .theme-icon-sun { display: block; }
     font-size: clamp(24px, 2.4vw, 36px);
     line-height: 1.4;
     letter-spacing: -0.005em;
-    color: #0a0a0a;
+    color: #F4C770;
     font-weight: 500;
     max-width: none;
 }
@@ -767,7 +770,7 @@ html.light .theme-icon-sun { display: block; }
 
 .about-skills {
     padding-top: 40px;
-    border-top: 1px solid rgba(10, 10, 10, 0.12);
+    border-top: 1px solid var(--border);
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 56px;
@@ -782,7 +785,7 @@ html.light .theme-icon-sun { display: block; }
     font-weight: 600;
     letter-spacing: .14em;
     text-transform: uppercase;
-    color: rgba(10, 10, 10, 0.45);
+    color: var(--text3);
     margin-bottom: 18px;
 }
 
@@ -797,16 +800,16 @@ html.light .theme-icon-sun { display: block; }
     font-size: 13px;
     font-weight: 400;
     letter-spacing: .02em;
-    color: rgba(10, 10, 10, 0.6);
+    color: var(--text2);
     padding: 7px 18px;
-    border: 1px solid rgba(10, 10, 10, 0.15);
+    border: 1px solid var(--border2);
     border-radius: 999px;
     transition: color .2s, border-color .2s;
 }
 
 .skill-pill:hover {
-    color: #0a0a0a;
-    border-color: rgba(10, 10, 10, .35);
+    color: var(--text);
+    border-color: rgba(255, 255, 255, .3);
 }
 
 
@@ -923,7 +926,7 @@ html.light .theme-icon-sun { display: block; }
     text-transform: none;
     letter-spacing: 0;
     font-weight: 400;
-    color: rgba(10, 10, 10, 0.35);
+    color: var(--text3);
     margin-left: 4px;
 }
 
@@ -983,7 +986,7 @@ html.light .theme-icon-sun { display: block; }
     font-size: 10px;
     font-style: italic;
     line-height: 1.5;
-    color: rgba(10, 10, 10, 0.35);
+    color: var(--text3);
     letter-spacing: 0.02em;
 }
 
@@ -1974,7 +1977,6 @@ html.light .theme-icon-sun { display: block; }
         font-size: 19px;
         line-height: 1.45;
         font-weight: 700;
-        color: #0a0a0a;
     }
 
     .about-desc-desktop { display: none; }
@@ -1990,13 +1992,12 @@ html.light .theme-icon-sun { display: block; }
         font-size: 11px !important;
         font-weight: 500 !important;
         background: transparent !important;
-        color: rgba(10, 10, 10, 0.6) !important;
     }
 
     .skill-pill::after {
         content: '·';
         margin-left: 6px;
-        color: rgba(10, 10, 10, 0.35);
+        color: var(--text3);
     }
 
     .skill-pill:last-child::after {
