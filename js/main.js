@@ -1,8 +1,7 @@
 /* ======================================================
    RYAN NGUITUI — BEYOND CANVAS PORTFOLIO
    Main JS: GSAP Magnetic Cursor · Image Cursor Trail ·
-   Morphing Text Cursor · Nav · Scroll Animations ·
-   Watermark · Mobile Menu
+   Nav · Scroll Animations · Watermark · Mobile Menu
    ====================================================== */
 'use strict';
 
@@ -10,15 +9,24 @@
    1. GSAP MAGNETIC CURSOR
    Adapted from the MagneticCursor React component.
    Requires GSAP loaded via CDN in <head>.
+   Adds .has-magnetic-cursor on <html> on success so CSS can hide
+   the native cursor only when the custom one is actually running.
+   If GSAP fails to load (CDN down, slow network), the native
+   cursor stays visible so visitors aren't left without one.
    ====================================================== */
 (function initMagneticCursor() {
+    var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+    if (isTouch) return;
+
     if (typeof gsap === 'undefined') {
-        console.warn('[BeyondCanvas] GSAP not found — magnetic cursor disabled.');
+        console.warn('[BeyondCanvas] GSAP not found — magnetic cursor disabled, native cursor used.');
         return;
     }
 
     const cursor = document.getElementById('magnetic-cursor');
     if (!cursor) return;
+
+    document.documentElement.classList.add('has-magnetic-cursor');
 
     /* --- Simple Vec2 (replaces 'vecteur' npm dep) --- */
     function Vec2(x, y) { this.x = x || 0; this.y = y || 0; }
@@ -172,11 +180,6 @@
 
         el.addEventListener('pointerout', function() { xTo(0); yTo(0); });
     });
-
-    /* Touch devices: hide cursor */
-    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-        cursor.style.display = 'none';
-    }
 })();
 
 
@@ -284,76 +287,6 @@
         e.preventDefault();
         onMove(e.touches[0].clientX, e.touches[0].clientY);
     }, { passive: false });
-})();
-
-
-/* ======================================================
-   3. MORPHING CURSOR TEXT
-   Adapted from MagneticText React component.
-   White circle follows mouse over [data-morph] elements;
-   counter-transform keeps hover-text centred.
-   ====================================================== */
-(function initMorphingCursors() {
-    document.querySelectorAll('[data-morph]').forEach(function(el) {
-        var hoverText = el.dataset.morph;
-        if (!hoverText) return;
-
-        // Ensure el is positioned so absolute overlay aligns perfectly
-        el.style.position = 'relative';
-
-        // Create overlay container masking effect
-        var overlay = document.createElement('div');
-        overlay.className = 'morph-overlay';
-        
-        var label = document.createElement('span');
-        label.className = 'morph-hover-text';
-        // Allow <br> in data-morph for multi-line reveals matching the base layout.
-        // Source is always a static HTML attribute we control, so no XSS surface.
-        label.innerHTML = hoverText;
-
-        overlay.appendChild(label);
-        el.appendChild(overlay);
-
-        var mousePos   = { x: el.offsetWidth / 2, y: el.offsetHeight / 2 };
-        var currentPos = { x: el.offsetWidth / 2, y: el.offsetHeight / 2 };
-        var raf;
-        var r = 0; // current radius
-        var targetR = 0; // target radius
-
-        function lerp(a, b, f) { return a + (b - a) * f; }
-
-        function animate() {
-            currentPos.x = lerp(currentPos.x, mousePos.x, 0.15);
-            currentPos.y = lerp(currentPos.y, mousePos.y, 0.15);
-            r = lerp(r, targetR, 0.15);
-
-            overlay.style.clipPath = 'circle(' + r + 'px at ' + currentPos.x + 'px ' + currentPos.y + 'px)';
-
-            raf = requestAnimationFrame(animate);
-        }
-        raf = requestAnimationFrame(animate);
-
-        el.addEventListener('mousemove', function(e) {
-            var rect = el.getBoundingClientRect();
-            mousePos.x = e.clientX - rect.left;
-            mousePos.y = e.clientY - rect.top;
-        });
-
-        el.addEventListener('mouseenter', function(e) {
-            var rect = el.getBoundingClientRect();
-            mousePos.x = e.clientX - rect.left;
-            mousePos.y = e.clientY - rect.top;
-            currentPos.x = mousePos.x;
-            currentPos.y = mousePos.y;
-            targetR = 160; // mask radius increased from 90
-            overlay.classList.add('active');
-        });
-
-        el.addEventListener('mouseleave', function() {
-            targetR = 0;
-            overlay.classList.remove('active');
-        });
-    });
 })();
 
 
@@ -887,35 +820,6 @@ document.querySelectorAll('.fade-up').forEach(function(el) { fadeObs.observe(el)
 
 
 /* ======================================================
-   9. PROJECT CARDS — subtle 3-D tilt
-   ====================================================== */
-if (!window.matchMedia('(hover: none)').matches) {
-    document.querySelectorAll('.project-card').forEach(function(card) {
-        var img = card.querySelector('.project-img');
-        if (!img) return;
-
-        card.addEventListener('mousemove', function(e) {
-            var r  = card.getBoundingClientRect();
-            var dx = (e.clientX - r.left - r.width  / 2) / (r.width  / 2);
-            var dy = (e.clientY - r.top  - r.height / 2) / (r.height / 2);
-            img.style.transform = 'perspective(700px) rotateY(' + (dx * 4) + 'deg) rotateX(' + (-dy * 3) + 'deg) scale(0.97)';
-        });
-        card.addEventListener('mouseleave', function() { img.style.transform = ''; });
-    });
-}
-
-
-/* ======================================================
-   10. MARQUEE — pause on touch
-   ====================================================== */
-var mTrack = document.querySelector('.marquee-track');
-if (mTrack) {
-    mTrack.addEventListener('touchstart', function() { mTrack.style.animationPlayState = 'paused'; }, { passive: true });
-    mTrack.addEventListener('touchend',   function() { mTrack.style.animationPlayState = 'running'; }, { passive: true });
-}
-
-
-/* ======================================================
    11. CARD STACK — fan/deck layout for work section
        Ported from 21.dev CardStack (React → vanilla JS)
    ====================================================== */
@@ -1001,7 +905,7 @@ if (mTrack) {
 
         el.addEventListener('click', function() {
             if (Math.abs(dragDeltaX) > 8) return;
-            if (i === active) { openProjectModal(p); }
+            if (i === active) { openProjectModal(PROJECTS, i); }
             else { setActive(i); }
         });
 
@@ -1128,11 +1032,14 @@ if (mTrack) {
 })();
 
 /* ======================================================
-   11b. PROJECT MODAL
+   11b. PROJECT MODAL — supports prev/next so visitors can
+   browse all projects without closing and re-clicking a card.
    ====================================================== */
 (function initProjectModal() {
     var backdrop = document.getElementById('projModalBackdrop');
     var closeBtn = document.getElementById('projModalClose');
+    var prevBtn  = document.getElementById('projModalPrev');
+    var nextBtn  = document.getElementById('projModalNext');
     var imgEl    = document.getElementById('projModalImg');
     var tagEl    = document.getElementById('projModalTag');
     var titleEl  = document.getElementById('projModalTitle');
@@ -1140,12 +1047,28 @@ if (mTrack) {
     var descEl   = document.getElementById('projModalDesc');
     if (!backdrop) return;
 
-    window.openProjectModal = function(p) {
-        imgEl.style.background  = 'url(\'' + p.img + '\') center/cover no-repeat,' + p.grad;
-        tagEl.textContent        = p.tag;
-        titleEl.textContent      = p.title;
-        catEl.textContent        = p.cat;
-        descEl.textContent       = p.desc;
+    var list = [];
+    var idx = 0;
+
+    function paint() {
+        var p = list[idx];
+        imgEl.style.background = 'url(\'' + p.img + '\') center/cover no-repeat,' + p.grad;
+        tagEl.textContent      = p.tag;
+        titleEl.textContent    = p.title;
+        catEl.textContent      = p.cat;
+        descEl.textContent     = p.desc;
+    }
+
+    function step(dir) {
+        if (!list.length) return;
+        idx = (idx + dir + list.length) % list.length;
+        paint();
+    }
+
+    window.openProjectModal = function(projects, startIdx) {
+        list = projects;
+        idx  = startIdx || 0;
+        paint();
         backdrop.setAttribute('aria-hidden', 'false');
         backdrop.classList.add('is-open');
         document.body.style.overflow = 'hidden';
@@ -1159,110 +1082,17 @@ if (mTrack) {
     }
 
     closeBtn.addEventListener('click', closeModal);
+    if (prevBtn) prevBtn.addEventListener('click', function(e) { e.stopPropagation(); step(-1); });
+    if (nextBtn) nextBtn.addEventListener('click', function(e) { e.stopPropagation(); step(1); });
     backdrop.addEventListener('click', function(e) {
         if (e.target === backdrop) closeModal();
     });
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && backdrop.classList.contains('is-open')) closeModal();
+        if (!backdrop.classList.contains('is-open')) return;
+        if (e.key === 'Escape')     closeModal();
+        if (e.key === 'ArrowLeft')  step(-1);
+        if (e.key === 'ArrowRight') step(1);
     });
-})();
-
-/* ======================================================
-   11c. IMAGE GALLERY — work showcase above contact
-   ====================================================== */
-(function initGallery() {
-    var IMGS = [
-        'img/sticky-scroll/Untitled Project (2).png',
-        'img/sticky-scroll/New Cafe Menu .png',
-        'img/sticky-scroll/Copy of Green Red Illustrative Camp Party Invitation_20240722_194952_0000.png',
-        'img/sticky-scroll/Purple Yellow Modern Restaurant Food Menu Promotion Instagram Post_20240801_115756_0000.png',
-        'img/sticky-scroll/20240201_221235_0000.png',
-        'img/sticky-scroll/Grey Minimalist Wall Art Photo Frame Mockup for Instagram Story_20240524_144716_0000.png',
-        'img/sticky-scroll/Massive_20240617_183454_0000.png',
-        'img/sticky-scroll/20240201_170054_0000.png',
-        'img/sticky-scroll/Blue and Grey Modern Discount Coupon Code Instagram Post_20251204_101032_0000.png',
-        'img/sticky-scroll/Blue Pink Bold Illustration Book Drive Event Poster_20251119_105002_0000.png',
-        'img/sticky-scroll/Merry Christmas Facebook Post_20251222_211203_0000.png',
-        'img/sticky-scroll/White And Blue Modern 2023 School Admission Poster_20251105_111537_0000.png',
-        'img/sticky-scroll/Yellow Bold Flea Market Event Poster_20251119_104141_0000.png',
-        'img/sticky-scroll/Black and Red Dynamic Bold World Affairs and News YouTube Thumbnail_20251105_160411_0000.png',
-        'img/sticky-scroll/Grey Newspaper Simple Announcement Press Release Document_20250811_103116_0000.png',
-        'img/sticky-scroll/Blue and Gold Elegant Financial Accounting Completion Certificate_20251016_123831_0000.png',
-    ];
-
-    var stage    = document.getElementById('galleryStage');
-    if (!stage) return;
-
-    var W       = 140;    /* card width  (px) */
-    var H       = 210;    /* card height (px) */
-    var OVERLAP = 100;    /* negative margin overlap */
-    var MAX_H   = 100;    /* max vertical stagger (centre card) */
-    var HOVER_Y = -148;   /* lift height on hover */
-
-    var len  = IMGS.length;
-    var mid  = (len - 1) / 2;
-    var step = MAX_H / mid;
-
-    var cards = [];
-
-    function mkT(y) {
-        return 'perspective(1200px) rotateY(-40deg) translateY(' + y + 'px)';
-    }
-
-    /* --- Desktop 3D fan --- */
-    IMGS.forEach(function(src, i) {
-        var dist    = Math.abs(i - mid);
-        var stagger = Math.max(6, MAX_H - dist * step);
-        var baseY   = -stagger;
-
-        var el  = document.createElement('div');
-        el.className      = 'gallery-card';
-        el.style.width    = W + 'px';
-        el.style.height   = H + 'px';
-        el.style.zIndex   = String(len - i);
-        if (i > 0) el.style.marginLeft = (-OVERLAP) + 'px';
-        el.style.opacity  = '0';
-        el.style.transform = mkT(200);
-
-        var img       = document.createElement('img');
-        img.src       = encodeURI(src);
-        img.alt       = '';
-        img.loading   = 'lazy';
-        img.draggable = false;
-        el.appendChild(img);
-        stage.appendChild(el);
-        cards.push({ el: el, baseY: baseY });
-
-        el.addEventListener('mouseenter', function() {
-            cards.forEach(function(c, j) {
-                c.el.style.transition = 'transform 0.18s cubic-bezier(0.16,1,0.3,1)';
-                c.el.style.transform  = mkT(j === i ? HOVER_Y : 0);
-            });
-        });
-        el.addEventListener('mouseleave', function() {
-            cards.forEach(function(c) {
-                c.el.style.transition = 'transform 0.4s cubic-bezier(0.16,1,0.3,1)';
-                c.el.style.transform  = mkT(c.baseY);
-            });
-        });
-    });
-
-    /* Mobile reel removed — same overlapping card fan on all devices */
-
-    /* --- Entrance animation --- */
-    var triggered = false;
-    var obs = new IntersectionObserver(function(entries) {
-        if (!entries[0].isIntersecting || triggered) return;
-        triggered = true;
-        cards.forEach(function(c, i) {
-            var delay = i * 40;
-            c.el.style.transition = 'transform 0.85s cubic-bezier(0.16,1,0.3,1) ' + delay + 'ms, opacity 0.55s ease ' + delay + 'ms';
-            c.el.style.opacity    = '1';
-            c.el.style.transform  = mkT(c.baseY);
-        });
-        obs.disconnect();
-    }, { threshold: 0.15 });
-    obs.observe(document.getElementById('gallery') || stage);
 })();
 
 /* ======================================================
