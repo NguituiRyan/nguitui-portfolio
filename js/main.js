@@ -1144,5 +1144,53 @@ document.querySelectorAll('.fade-up').forEach(function(el) { fadeObs.observe(el)
 
 
 /* ======================================================
+   12b. MAGIC TEXT — About paragraph word-by-word reveal
+   Splits .about-desc-desktop / .about-desc-mobile into
+   word-spans, then ScrollTrigger scrubs their opacity from
+   0.18 → 1 as the paragraph passes through the viewport.
+   Falls back to fully-visible text if GSAP/ScrollTrigger
+   fails to load, or if user prefers reduced motion.
+   ====================================================== */
+(function initMagicText() {
+    var targets = document.querySelectorAll('.about-desc-desktop, .about-desc-mobile');
+    if (!targets.length) return;
+
+    // Split words for every target so layout stays consistent
+    // even when JS animation is skipped.
+    targets.forEach(function(el) {
+        var text = el.textContent.replace(/\s+/g, ' ').trim();
+        var words = text.split(' ');
+        el.innerHTML = words.map(function(w) {
+            return '<span class="magic-word">' + w + '</span>';
+        }).join(' ');
+    });
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    targets.forEach(function(el) {
+        var spans = el.querySelectorAll('.magic-word');
+        if (!spans.length) return;
+        gsap.fromTo(spans,
+            { opacity: 0.18 },
+            {
+                opacity: 1,
+                ease: 'none',
+                stagger: 0.04,
+                scrollTrigger: {
+                    trigger: el,
+                    start: 'top 85%',
+                    end: 'bottom 65%',
+                    scrub: 0.6
+                }
+            }
+        );
+    });
+})();
+
+
+/* ======================================================
    13. STICKY SCROLL GALLERY — no JS needed, pure CSS sticky
    ====================================================== */

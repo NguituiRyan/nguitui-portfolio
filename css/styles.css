@@ -590,7 +590,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 32px;
-    max-width: 860px;
+    max-width: none;
 }
 
 .about-eyebrow {
@@ -607,10 +607,17 @@ body {
 
 .about-desc {
     font-family: var(--font-sans);
-    font-size: 16px;
-    line-height: 1.85;
-    letter-spacing: .01em;
-    color: var(--text2);
+    font-size: clamp(24px, 2.4vw, 36px);
+    line-height: 1.4;
+    letter-spacing: -0.005em;
+    color: #F4C770;
+    font-weight: 500;
+    max-width: none;
+}
+
+.magic-word {
+    display: inline;
+    transition: opacity .2s ease;
 }
 
 .about-desc-mobile { display: none; }
@@ -1815,7 +1822,13 @@ body {
     }
 
     .about-top { gap: 24px; padding-bottom: 24px; }
-    
+
+    .about-desc {
+        font-size: 19px;
+        line-height: 1.45;
+        font-weight: 700;
+    }
+
     .about-desc-desktop { display: none; }
     .about-desc-mobile { display: inline; }
 
