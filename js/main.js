@@ -190,6 +190,9 @@
 (function initImageCursorTrail() {
     var hero = document.getElementById('hero');
     if (!hero) return;
+    var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0 || window.matchMedia('(pointer: coarse)').matches;
+    if (isTouch) return;
+
     var images = [
         "img/hero-cursor/1_20240801_203948_0000.png",
         "img/hero-cursor/1_20250601_123911_0000.png",
@@ -825,18 +828,78 @@ document.querySelectorAll('.fade-up').forEach(function(el) { fadeObs.observe(el)
    ====================================================== */
 (function initCardStack() {
     var PROJECTS = [
-        { title: 'Modern Cushions',       cat: 'Luxury Auto Seating',             tag: 'Graphic Design · Web',      img: 'img/projects/1.jpg',  grad: 'linear-gradient(140deg,#5c1a1a,#1a0606)',
-          desc: 'Modern Cushions manufactures and installs premium custom seat upholstery for vehicles across Nairobi. Their clientele is aspirational — buyers who want their car interiors to reflect the same quality as the rest of their lifestyle. The brief was clear: make everything look as premium as the product itself. I came on board as the brand\'s full creative retainer — responsible for every visual touchpoint, from the daily Instagram grid to the massive banners that anchor their presence at trade expos and automotive shows across Kenya.' },
-        { title: 'Zalika Africa',          cat: 'Caregiver Training School',        tag: 'Branding · Web',            img: 'img/projects/2.jpg',  grad: 'linear-gradient(140deg,#2c6e6b,#0d2625)',
-          desc: 'Zalika Africa trains and certifies caregivers across Kenya — a profession that carries enormous responsibility and deserves to be presented with corresponding seriousness and warmth. The school needed a visual identity that communicated trustworthiness to both students and the families who would employ their graduates. I led the end-to-end brand build: from the initial logo concept through to the physical print collateral used at their open days, and ultimately the website and a custom school management system for tracking enrolments, schedules, and certifications.' },
-        { title: 'Angawatch',             cat: 'Flood Early-Warning System',      tag: 'Brand · App · Pitch',       img: 'img/projects/3.jpg',  grad: 'linear-gradient(140deg,#0a3d62,#051d30)',
-          desc: 'Angawatch is a flood early-warning system and cognitive community platform built to protect lives and livelihoods in flood-prone regions of Kenya. I co-founded the venture and lead all visual design — from the initial logo through to the pitch materials used at international competitions. The design challenge was significant: we needed a brand that felt credible to both local communities we serve and international judges, investors, and tech organisations evaluating our work.' },
-        { title: 'Strathmore University', cat: 'Event Creative & Assets',         tag: 'Graphic Design · Video',    img: 'img/projects/4.jpg',  grad: 'linear-gradient(140deg,#0a3d7a,#03152e)',
-          desc: 'SCESA — the Strathmore Computing & Engineering Students Association — hosts a regular calendar of events: team-building days, hackathons, panel discussions, and industry networking sessions. As the designer embedded within the Strathmore community, I was the natural choice to handle their event creative and on-the-ground content capture. The work spanned both digital and physical: poster designs created and distributed to noticeboards and WhatsApp groups ahead of events, plus live shooting and post-production editing of video content published on the association\'s social channels.' },
-        { title: 'Yakoyo Restaurant',     cat: 'Promotional Creative',             tag: 'Graphic Design',            img: 'img/projects/7.jpg',  grad: 'linear-gradient(140deg,#c2540a,#3a1604)',
-          desc: 'Yakoyo is a Nairobi brand operating in the food, events, and hospitality space — an industry where visual presence directly drives footfall and bookings. In a competitive market flooded with generic templates, they needed creative that felt distinctive: warm, inviting, and unmistakably theirs. I was brought on to design a promotional poster series for their events and seasonal offerings. Each poster needed to communicate the atmosphere of the experience before anyone set foot through the door.' },
-        { title: 'Flossytrukid',          cat: 'Influencer / Content',            tag: 'Graphic Design',            img: 'img/projects/9.jpg',  grad: 'linear-gradient(140deg,#8a1a5e,#2a0820)',
-          desc: 'FlossyTruKid is a Kenyan content creator building an audience across YouTube and social platforms — someone whose growth depends on the immediate impact of their visual presence. In the creator economy, a thumbnail has under 200 milliseconds to convince a viewer to click. I was brought in to elevate the visual quality across both business-facing and audience-facing creative: promotional business posters for partnerships and brand collaborations, and a YouTube thumbnail system that could consistently outperform competing content in a crowded feed.' },
+        {
+            title: 'Modern Cushions',
+            cat: 'Luxury Auto Seating',
+            tag: 'Graphic Design · Web',
+            img: 'img/projects/1.jpg',
+            grad: 'linear-gradient(140deg,#5c1a1a,#1a0606)',
+            problem: 'The brand sold premium vehicle upholstery, but the visuals needed to feel as polished as the product before customers reached out.',
+            delivered: 'Brand-aligned social creatives, large-format banners, promotional posters, and web direction for a cleaner enquiry journey.',
+            before: 'Scattered touchpoints made the offer feel less premium than the actual installation work.',
+            after: 'A more consistent luxury look across Instagram, event banners, and customer-facing promos.',
+            result: 'Cleaner brand perception, stronger event presence, and faster trust with customers comparing custom interior providers.'
+        },
+        {
+            title: 'Zalika Africa',
+            cat: 'Caregiver Training School',
+            tag: 'Branding · Web',
+            img: 'img/projects/2.jpg',
+            grad: 'linear-gradient(140deg,#2c6e6b,#0d2625)',
+            problem: 'A caregiver training school needed to look credible, warm, and organised for students, parents, and families hiring graduates.',
+            delivered: 'Identity direction, print collateral, website visuals, and school-management interface direction.',
+            before: 'The school needed a clearer visual system to explain its training value and build confidence.',
+            after: 'A calmer, more trustworthy presentation with visuals that fit education, care, and enrolment.',
+            result: 'Sharper public image, easier enrolment conversations, and a brand system that supports both digital and print communication.'
+        },
+        {
+            title: 'Angawatch',
+            cat: 'Flood Early-Warning System',
+            tag: 'Brand · App · Pitch',
+            img: 'img/projects/3.jpg',
+            grad: 'linear-gradient(140deg,#0a3d62,#051d30)',
+            problem: 'A climate-tech startup needed to explain flood-risk technology clearly to local communities, judges, and potential partners.',
+            delivered: 'Logo direction, app visuals, pitch-deck design, diagrams, and competition-ready presentation assets.',
+            before: 'The concept was strong, but needed a visual language that made the system easier to understand quickly.',
+            after: 'A credible tech-for-impact identity that could work in pitch rooms and community-facing explanations.',
+            result: 'More confident pitching, clearer storytelling, and stronger trust signals for partners evaluating the startup.'
+        },
+        {
+            title: 'Strathmore University',
+            cat: 'Event Creative & Assets',
+            tag: 'Graphic Design · Video',
+            img: 'img/projects/4.jpg',
+            grad: 'linear-gradient(140deg,#0a3d7a,#03152e)',
+            problem: 'Campus events needed posters and media that could cut through noisy WhatsApp groups, noticeboards, and social feeds.',
+            delivered: 'Event posters, social assets, photography/video capture, and post-event content edits.',
+            before: 'Event communication risked blending into the usual campus announcements.',
+            after: 'Sharper event visuals built for quick recognition across screens, print, and social posts.',
+            result: 'Better event visibility, stronger association presence, and reusable creative direction for student activities.'
+        },
+        {
+            title: 'Yakoyo Restaurant',
+            cat: 'Promotional Creative',
+            tag: 'Graphic Design',
+            img: 'img/projects/7.jpg',
+            grad: 'linear-gradient(140deg,#c2540a,#3a1604)',
+            problem: 'A food and events brand needed warm promotional designs that could make offers feel inviting before people arrived.',
+            delivered: 'Seasonal posters, menu-style promotions, social media creatives, and event campaign visuals.',
+            before: 'The offer needed more atmosphere and appetite appeal than a standard template could provide.',
+            after: 'Distinctive, warm visuals that made the restaurant/event experience easier to imagine.',
+            result: 'Stronger promotional presence, clearer event communication, and more booking-friendly social posts.'
+        },
+        {
+            title: 'Flossytrukid',
+            cat: 'Influencer / Content',
+            tag: 'Graphic Design',
+            img: 'img/projects/9.jpg',
+            grad: 'linear-gradient(140deg,#8a1a5e,#2a0820)',
+            problem: 'A creator needed business-facing posters and thumbnails that could compete in fast-moving social feeds.',
+            delivered: 'Promotional posters, creator-brand assets, YouTube thumbnail direction, and visual systems for content drops.',
+            before: 'Content needed stronger first-glance impact for audiences and potential brand partners.',
+            after: 'Bolder, more clickable visuals with clearer hierarchy and creator personality.',
+            result: 'Stronger online presentation, better content packaging, and a more professional look for collaborations.'
+        },
     ];
 
     /* --- geometry constants --- */
@@ -900,7 +963,7 @@ document.querySelectorAll('.fade-up').forEach(function(el) { fadeObs.observe(el)
                     '<div class="stack-card-title">' + p.title + '</div>' +
                     '<div class="stack-card-cat">' + p.cat + '</div>' +
                 '</div>' +
-                '<span class="stack-card-cta">View ↗</span>' +
+                '<span class="stack-card-cta">Case study ↗</span>' +
             '</div>';
 
         el.addEventListener('click', function() {
@@ -1044,7 +1107,7 @@ document.querySelectorAll('.fade-up').forEach(function(el) { fadeObs.observe(el)
     var tagEl    = document.getElementById('projModalTag');
     var titleEl  = document.getElementById('projModalTitle');
     var catEl    = document.getElementById('projModalCat');
-    var descEl   = document.getElementById('projModalDesc');
+    var caseEl   = document.getElementById('projModalCase');
     if (!backdrop) return;
 
     var list = [];
@@ -1056,7 +1119,16 @@ document.querySelectorAll('.fade-up').forEach(function(el) { fadeObs.observe(el)
         tagEl.textContent      = p.tag;
         titleEl.textContent    = p.title;
         catEl.textContent      = p.cat;
-        descEl.textContent     = p.desc;
+        caseEl.innerHTML =
+            '<div class="case-grid">' +
+                '<section class="case-block"><span>Client problem</span><p>' + p.problem + '</p></section>' +
+                '<section class="case-block"><span>What I delivered</span><p>' + p.delivered + '</p></section>' +
+                '<section class="case-block case-result"><span>Result</span><p>' + p.result + '</p></section>' +
+            '</div>' +
+            '<div class="case-visuals" aria-label="Before and after visual summary">' +
+                '<div class="case-visual case-before"><span>Before</span><p>' + p.before + '</p></div>' +
+                '<div class="case-visual case-after" style="background-image:linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.48)), url(\'' + p.img + '\');"><span>After</span><p>' + p.after + '</p></div>' +
+            '</div>';
     }
 
     function step(dir) {
