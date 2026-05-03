@@ -11,7 +11,7 @@
     <!-- GSAP for magnetic cursor + ScrollTrigger for about magic-text -->
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-    <link rel="stylesheet" href="css/styles.css?v=20260504f">
+    <link rel="stylesheet" href="css/styles.css?v=20260504g">
     <script>
     // Apply saved theme immediately to prevent flash
     (function(){var t=localStorage.getItem('bc_theme');if(t==='light'||((!t)&&window.matchMedia('(prefers-color-scheme: light)').matches)){document.documentElement.classList.add('light');}})();
@@ -19,12 +19,15 @@
 </head>
 <body>
 
-<!-- Fast Tetris preloader -->
+<!-- Newton's cradle preloader -->
 <div class="site-loader" id="site-loader" role="status" aria-live="polite" aria-label="Loading portfolio">
-    <div class="tetris-loader" aria-hidden="true">
-        <div class="tetris-board" id="tetris-loader-board"></div>
+    <div class="newtons-cradle" aria-hidden="true">
+        <div class="newtons-cradle__dot"></div>
+        <div class="newtons-cradle__dot"></div>
+        <div class="newtons-cradle__dot"></div>
+        <div class="newtons-cradle__dot"></div>
     </div>
-    <p class="tetris-loader-text">Loading portfolio</p>
+    <p class="loader-text">Loading portfolio</p>
 </div>
 
 <!-- Magnetic cursor (single element — replaces ring+dot) -->
@@ -473,6 +476,6 @@
     </div>
 </div>
 
-<script src="js/main.js?v=20260504f"></script>
+<script src="js/main.js?v=20260504g"></script>
 </body>
 </html>

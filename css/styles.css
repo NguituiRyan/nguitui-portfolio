@@ -86,7 +86,7 @@ html.light body {
 }
 
 /* ======================================================
-   2c. FAST TETRIS PRELOADER
+   2c. NEWTON'S CRADLE PRELOADER
    ====================================================== */
 .site-loader {
     position: fixed;
@@ -110,44 +110,45 @@ html.light body {
     pointer-events: none;
 }
 
-.tetris-loader {
-    padding: 8px;
-    border: 2px solid var(--text);
-    background: var(--bg);
-    box-shadow: 0 18px 60px rgba(0, 0, 0, .45);
+.newtons-cradle {
+    --uib-size: 58px;
+    --uib-speed: 1.2s;
+    --uib-color: var(--text);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--uib-size);
+    height: var(--uib-size);
 }
 
-.tetris-board {
-    display: grid;
-    grid-template-columns: repeat(10, 12px);
-    grid-auto-rows: 12px;
-    gap: 0;
+.newtons-cradle__dot {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 25%;
+    transform-origin: center top;
 }
 
-.tetris-cell {
-    width: 12px;
-    height: 12px;
-    border: 1px solid rgba(255, 255, 255, .2);
-    background: var(--bg);
-    transform: scale(.94);
-    transition: background .08s linear, transform .08s linear, opacity .16s linear;
+.newtons-cradle__dot::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 25%;
+    border-radius: 50%;
+    background-color: var(--uib-color);
 }
 
-html.light .tetris-cell {
-    border-color: rgba(10, 10, 10, .18);
+.newtons-cradle__dot:first-child {
+    animation: loaderSwing var(--uib-speed) linear infinite;
 }
 
-.tetris-cell.is-filled {
-    background: var(--text);
-    transform: scale(1);
+.newtons-cradle__dot:last-child {
+    animation: loaderSwing2 var(--uib-speed) linear infinite;
 }
 
-.tetris-cell.is-clearing {
-    opacity: .45;
-    animation: tetrisClearPulse .18s linear alternate infinite;
-}
-
-.tetris-loader-text {
+.loader-text {
     font-family: var(--font-sans);
     font-size: 11px;
     font-weight: 700;
@@ -156,20 +157,37 @@ html.light .tetris-cell {
     color: var(--text2);
 }
 
-@keyframes tetrisClearPulse {
-    from { opacity: .35; }
-    to { opacity: 1; }
-}
-
-@media (max-width: 768px) {
-    .tetris-board {
-        grid-template-columns: repeat(10, 10px);
-        grid-auto-rows: 10px;
+@keyframes loaderSwing {
+    0% {
+        transform: rotate(0deg);
+        animation-timing-function: ease-out;
     }
 
-    .tetris-cell {
-        width: 10px;
-        height: 10px;
+    25% {
+        transform: rotate(70deg);
+        animation-timing-function: ease-in;
+    }
+
+    50% {
+        transform: rotate(0deg);
+        animation-timing-function: linear;
+    }
+}
+
+@keyframes loaderSwing2 {
+    0% {
+        transform: rotate(0deg);
+        animation-timing-function: linear;
+    }
+
+    50% {
+        transform: rotate(0deg);
+        animation-timing-function: ease-out;
+    }
+
+    75% {
+        transform: rotate(-70deg);
+        animation-timing-function: ease-in;
     }
 }
 
