@@ -6,6 +6,192 @@
 'use strict';
 
 /* ======================================================
+   0. FAST TETRIS PRELOADER
+   Static-site equivalent of the requested Tetris loader.
+   Runs before the portfolio is revealed, then fades out.
+   ====================================================== */
+(function initTetrisPreloader() {
+    var loader = document.getElementById('site-loader');
+    var board = document.getElementById('tetris-loader-board');
+    if (!loader || !board) return;
+
+    var width = 10;
+    var height = 20;
+    var speed = 42;
+    var pieces = [
+        [[1, 1, 1, 1]],
+        [[1, 1], [1, 1]],
+        [[0, 1, 0], [1, 1, 1]],
+        [[1, 0], [1, 0], [1, 1]],
+        [[0, 1, 1], [1, 1, 0]],
+        [[1, 1, 0], [0, 1, 1]],
+        [[0, 1], [0, 1], [1, 1]]
+    ];
+    var grid = Array.from({ length: height }, function () {
+        return Array.from({ length: width }, function () { return false; });
+    });
+    var cells = [];
+    var active = null;
+    var timer = null;
+    var started = performance.now();
+    var minVisible = 1550;
+    var hiding = false;
+
+    for (var i = 0; i < width * height; i++) {
+        var cell = document.createElement('span');
+        cell.className = 'tetris-cell';
+        board.appendChild(cell);
+        cells.push(cell);
+    }
+
+    function rotate(shape) {
+        var rows = shape.length;
+        var cols = shape[0].length;
+        var out = Array.from({ length: cols }, function () {
+            return Array.from({ length: rows }, function () { return 0; });
+        });
+        for (var r = 0; r < rows; r++) {
+            for (var c = 0; c < cols; c++) {
+                out[c][rows - 1 - r] = shape[r][c];
+            }
+        }
+        return out;
+    }
+
+    function newPiece() {
+        var shape = pieces[Math.floor(Math.random() * pieces.length)].map(function (row) {
+            return row.slice();
+        });
+        var turns = Math.floor(Math.random() * 4);
+        for (var t = 0; t < turns; t++) shape = rotate(shape);
+        return {
+            shape: shape,
+            x: Math.floor(Math.random() * (width - shape[0].length + 1)),
+            y: -shape.length
+        };
+    }
+
+    function canPlace(piece, nextX, nextY) {
+        for (var r = 0; r < piece.shape.length; r++) {
+            for (var c = 0; c < piece.shape[r].length; c++) {
+                if (!piece.shape[r][c]) continue;
+                var x = nextX + c;
+                var y = nextY + r;
+                if (x < 0 || x >= width || y >= height) return false;
+                if (y >= 0 && grid[y][x]) return false;
+            }
+        }
+        return true;
+    }
+
+    function place(piece) {
+        for (var r = 0; r < piece.shape.length; r++) {
+            for (var c = 0; c < piece.shape[r].length; c++) {
+                if (!piece.shape[r][c]) continue;
+                var x = piece.x + c;
+                var y = piece.y + r;
+                if (y >= 0 && y < height && x >= 0 && x < width) grid[y][x] = true;
+            }
+        }
+    }
+
+    function clearLines() {
+        var next = grid.filter(function (row) {
+            return !row.every(Boolean);
+        });
+        var cleared = height - next.length;
+        while (next.length < height) {
+            next.unshift(Array.from({ length: width }, function () { return false; }));
+        }
+        grid = next;
+        return cleared;
+    }
+
+    function resetIfCrowded() {
+        var crowded = grid.slice(0, 4).some(function (row) {
+            return row.filter(Boolean).length > 6;
+        });
+        if (crowded) {
+            grid = Array.from({ length: height }, function () {
+                return Array.from({ length: width }, function () { return false; });
+            });
+            active = null;
+        }
+    }
+
+    function draw(clearingRows) {
+        var display = grid.map(function (row) { return row.slice(); });
+        if (active) {
+            for (var r = 0; r < active.shape.length; r++) {
+                for (var c = 0; c < active.shape[r].length; c++) {
+                    if (!active.shape[r][c]) continue;
+                    var x = active.x + c;
+                    var y = active.y + r;
+                    if (y >= 0 && y < height && x >= 0 && x < width) display[y][x] = true;
+                }
+            }
+        }
+
+        for (var y = 0; y < height; y++) {
+            for (var x2 = 0; x2 < width; x2++) {
+                var node = cells[y * width + x2];
+                node.classList.toggle('is-filled', display[y][x2]);
+                node.classList.toggle('is-clearing', clearingRows && clearingRows.indexOf(y) !== -1);
+            }
+        }
+    }
+
+    function step() {
+        if (!active) active = newPiece();
+        var drewClearing = false;
+        if (canPlace(active, active.x, active.y + 1)) {
+            active.y += 1;
+        } else {
+            place(active);
+            var fullRows = [];
+            grid.forEach(function (row, idx) {
+                if (row.every(Boolean)) fullRows.push(idx);
+            });
+            if (fullRows.length) {
+                draw(fullRows);
+                drewClearing = true;
+                setTimeout(function () {
+                    clearLines();
+                    draw();
+                }, 150);
+            }
+            resetIfCrowded();
+            active = newPiece();
+        }
+        if (!drewClearing) draw();
+    }
+
+    timer = setInterval(step, speed);
+    step();
+
+    function hideLoader() {
+        if (hiding) return;
+        hiding = true;
+        var elapsed = performance.now() - started;
+        var wait = Math.max(0, minVisible - elapsed);
+        setTimeout(function () {
+            loader.classList.add('is-hidden');
+            setTimeout(function () {
+                clearInterval(timer);
+                loader.remove();
+            }, 520);
+        }, wait);
+    }
+
+    if (document.readyState === 'complete') {
+        hideLoader();
+    } else {
+        window.addEventListener('load', hideLoader, { once: true });
+        setTimeout(hideLoader, 3200);
+    }
+})();
+
+/* ======================================================
    1. GSAP MAGNETIC CURSOR
    Adapted from the MagneticCursor React component.
    Requires GSAP loaded via CDN in <head>.
