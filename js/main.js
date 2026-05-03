@@ -588,6 +588,36 @@
         }
     });
 
+    var inviteEl = document.getElementById('tap-invite');
+    function inviteTap() {
+        if (sessionTaps > 0) return;
+        btn.classList.add('is-inviting');
+        if (inviteEl) inviteEl.classList.add('is-calling');
+        if (cueEl) {
+            cueEl.textContent = 'tap me once';
+            cueEl.classList.remove('is-flashing');
+            void cueEl.offsetWidth;
+            cueEl.classList.add('is-flashing');
+        }
+        setTimeout(function () {
+            btn.classList.remove('is-inviting');
+            if (inviteEl) inviteEl.classList.remove('is-calling');
+        }, 2600);
+    }
+
+    if (!reduceMotion && 'IntersectionObserver' in window) {
+        var inviteSeen = false;
+        var inviteObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (inviteSeen || !entry.isIntersecting) return;
+                inviteSeen = true;
+                inviteTap();
+                inviteObserver.disconnect();
+            });
+        }, { threshold: 0.55 });
+        inviteObserver.observe(btn);
+    }
+
     // Make sure any unsent hits go out before unload
     window.addEventListener('pagehide', flushHits);
     window.addEventListener('beforeunload', flushHits);

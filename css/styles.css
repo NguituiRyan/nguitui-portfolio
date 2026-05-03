@@ -314,13 +314,13 @@ body {
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 28px;
+    gap: 22px;
     margin-inline-start: auto;
 }
 
 .nav-link {
     font-family: var(--font-sans);
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 500;
     letter-spacing: .1em;
     text-transform: uppercase;
@@ -454,6 +454,7 @@ html.light .theme-icon-sun { display: block; }
 
 .m-social {
     display: flex;
+    flex-wrap: wrap;
     gap: 24px;
     padding-top: 32px;
     margin-top: auto;
@@ -733,7 +734,7 @@ html.light .theme-icon-sun { display: block; }
    ====================================================== */
 .about-section {
     border-top: 1px solid var(--border);
-    padding: 100px var(--pad-x);
+    padding: 100px var(--pad-x) 88px;
 }
 
 .about-inner {
@@ -782,15 +783,54 @@ html.light .theme-icon-sun { display: block; }
 .skills-mobile-more { display: none; }
 
 .about-skills {
-    padding-top: 40px;
+    padding-top: 28px;
     border-top: 1px solid var(--border);
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 56px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+    gap: 20px;
     align-items: start;
 }
-.skills-col { min-width: 0; }
-.arcade-col { display: flex; flex-direction: column; }
+
+.skills-col,
+.arcade-col {
+    min-width: 0;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.035);
+}
+
+.skills-col {
+    padding: 26px;
+}
+
+.arcade-col {
+    padding: 26px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    grid-template-areas:
+        "fit-label arcade-label"
+        "fit-card tap-invite"
+        "fit-card arcade-button"
+        "arcade-foot arcade-foot";
+    gap: 14px 24px;
+    align-items: start;
+}
+
+.arcade-col > .col-label:first-child {
+    grid-area: fit-label;
+    margin-bottom: 0;
+}
+
+.bridge-title {
+    max-width: 620px;
+    margin: 0 0 20px;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(28px, 2.8vw, 42px);
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    color: var(--text);
+}
 
 .col-label {
     font-family: var(--font-sans);
@@ -826,11 +866,12 @@ html.light .theme-icon-sun { display: block; }
 }
 
 .client-fit-card {
-    width: min(360px, 100%);
+    grid-area: fit-card;
+    width: 100%;
     padding: 24px;
     border: 1px solid var(--border2);
     border-radius: 16px;
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.055);
 }
 
 .fit-stat {
@@ -842,6 +883,15 @@ html.light .theme-icon-sun { display: block; }
     font-weight: 700;
     line-height: 1.05;
     color: var(--text);
+}
+
+.bridge-copy {
+    max-width: 540px;
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--text2);
 }
 
 .client-fit-card p {
@@ -865,10 +915,13 @@ html.light .theme-icon-sun { display: block; }
 }
 
 .poster-note {
-    width: min(360px, 100%);
-    margin-top: 22px;
-    padding: 22px 0 4px;
-    border-top: 1px solid var(--border);
+    grid-area: poster;
+    width: 100%;
+    margin-top: 8px;
+    padding: 22px 24px 24px;
+    border: 1px solid var(--border2);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.04);
 }
 
 .poster-note h3 {
@@ -883,6 +936,7 @@ html.light .theme-icon-sun { display: block; }
 
 .poster-note p:last-child {
     margin: 0;
+    max-width: 760px;
     font-family: var(--font-sans);
     font-size: 14px;
     line-height: 1.7;
@@ -890,7 +944,29 @@ html.light .theme-icon-sun { display: block; }
 }
 
 .arcade-heading {
-    margin-top: 28px;
+    grid-area: arcade-label;
+    margin: 0;
+    justify-self: end;
+    text-align: right;
+}
+
+.tap-invite {
+    grid-area: tap-invite;
+    justify-self: end;
+    max-width: 280px;
+    margin: 0;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(22px, 2vw, 30px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    text-align: right;
+    color: var(--text);
+}
+
+.tap-invite.is-calling {
+    animation: tapInviteNudge 1.25s cubic-bezier(0.16, 1, 0.3, 1) 2;
 }
 
 
@@ -904,6 +980,8 @@ html.light .theme-icon-sun { display: block; }
     --rim:      #0a0a0a;
     --depth:    7px;
     position: relative;
+    grid-area: arcade-button;
+    justify-self: end;
     display: block;
     width: 280px;
     padding: 0;
@@ -917,6 +995,10 @@ html.light .theme-icon-sun { display: block; }
     transform: translateY(0);
     transition: transform .12s ease;
     will-change: transform;
+}
+
+.arcade-btn.is-inviting .arcade-face {
+    animation: arcadeInvitePulse 1.25s cubic-bezier(0.16, 1, 0.3, 1) 2;
 }
 
 .arcade-face {
@@ -1061,11 +1143,14 @@ html.light .theme-icon-sun { display: block; }
 
 /* Tiny disclaimer line under the button */
 .arcade-foot {
-    margin-top: 18px;
-    max-width: 280px;
+    grid-area: arcade-foot;
+    justify-self: end;
+    margin-top: 4px;
+    max-width: 420px;
     font-family: var(--font-sans);
     font-size: 10px;
     font-style: italic;
+    text-align: right;
     line-height: 1.5;
     color: var(--text3);
     letter-spacing: 0.02em;
@@ -1147,28 +1232,137 @@ html.light .theme-icon-sun { display: block; }
     100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.2); opacity: 0; }
 }
 
+@keyframes arcadeInvitePulse {
+    0%, 100% {
+        transform: translateY(0) rotate(0);
+        box-shadow:
+            0 var(--depth) 0 0 var(--rim),
+            0 calc(var(--depth) + 6px) 18px rgba(0, 0, 0, 0.45),
+            inset 0 2px 0 rgba(255, 255, 255, 0.55),
+            inset 0 -2px 0 rgba(0, 0, 0, 0.08);
+    }
+    35% {
+        transform: translateY(-8px) rotate(-1deg);
+        box-shadow:
+            0 calc(var(--depth) + 4px) 0 0 var(--rim),
+            0 calc(var(--depth) + 18px) 34px rgba(245, 237, 224, 0.2),
+            inset 0 2px 0 rgba(255, 255, 255, 0.65),
+            inset 0 -2px 0 rgba(0, 0, 0, 0.08);
+    }
+    65% { transform: translateY(3px) rotate(1deg); }
+}
+
+@keyframes tapInviteNudge {
+    0%, 100% { transform: translateX(0); color: var(--text); }
+    35% { transform: translateX(-8px); color: #f5ede0; }
+    65% { transform: translateX(3px); }
+}
+
 /* ---------- Mobile: stack columns, full-width button ---------- */
 @media (max-width: 768px) {
     .about-skills {
         grid-template-columns: 1fr;
-        gap: 32px;
+        gap: 14px;
     }
+
+    .skills-col,
+    .arcade-col {
+        padding: 20px;
+        border-radius: 14px;
+    }
+
+    .arcade-col {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "fit-label"
+            "fit-card"
+            "arcade-label"
+            "tap-invite"
+            "arcade-button"
+            "arcade-foot";
+        gap: 14px;
+    }
+
+    .bridge-title {
+        font-size: clamp(28px, 8vw, 40px);
+        margin-bottom: 18px;
+    }
+
+    .poster-note {
+        margin-top: 4px;
+        padding-top: 18px;
+    }
+
     .arcade-btn { width: 100%; max-width: 360px; }
     .arcade-number { font-size: 48px; }
+
+    .arcade-heading,
+    .tap-invite,
+    .arcade-btn,
+    .arcade-foot {
+        justify-self: start;
+        text-align: left;
+    }
+
+    .tap-invite {
+        max-width: 360px;
+        font-size: clamp(24px, 7vw, 34px);
+    }
+
+    .arcade-foot {
+        margin-top: 4px;
+        max-width: 360px;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
     .arcade-live-dot,
-    .arcade-number.is-bumping { animation: none; }
+    .arcade-number.is-bumping,
+    .arcade-btn.is-inviting .arcade-face,
+    .tap-invite.is-calling { animation: none; }
 }
 
 
 /* ======================================================
    STICKY SCROLL GALLERY
    ====================================================== */
-.sticky-gallery {
+.gallery-intro {
     background: var(--bg);
     border-top: 1px solid var(--border);
+    padding: 64px var(--pad-x) 34px;
+}
+
+.gallery-intro-inner {
+    max-width: var(--max-w);
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 24px;
+    align-items: end;
+}
+
+.gallery-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(52px, 9vw, 138px);
+    font-weight: 700;
+    line-height: 0.86;
+    letter-spacing: -0.055em;
+    color: var(--text);
+}
+
+.gallery-copy {
+    max-width: 560px;
+    margin: 0 0 6px;
+    font-family: var(--font-sans);
+    font-size: clamp(15px, 1.2vw, 18px);
+    line-height: 1.65;
+    color: var(--text2);
+}
+
+.sticky-gallery {
+    background: var(--bg);
 }
 .sticky-gallery-grid {
     display: grid;
@@ -1227,6 +1421,24 @@ html.light .theme-icon-sun { display: block; }
 
 /* Mobile: 3 columns maintained, tighter gaps */
 @media (max-width: 768px) {
+    .gallery-intro {
+        padding: 46px var(--pad-x) 24px;
+    }
+
+    .gallery-intro-inner {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .gallery-title {
+        font-size: clamp(58px, 21vw, 96px);
+    }
+
+    .gallery-copy {
+        max-width: 100%;
+        font-size: 14px;
+    }
+
     .sticky-gallery-grid {
         gap: 4px;
         padding: 4px;
@@ -1975,23 +2187,23 @@ html.light .theme-icon-sun { display: block; }
 
     /* Portrait strip — horizontal slice showing upper body */
     .hero-right {
-        height: 38svh;
-        min-height: 180px;
+        height: 42svh;
+        min-height: 220px;
     }
 
 
 
     .portrait-img {
-        transform: scale(1.4) !important;
-        transform-origin: center bottom !important;
-        background-position: center bottom !important;
-        background-size: contain !important;
+        transform: scale(1.58) !important;
+        transform-origin: 72% bottom !important;
+        background-position: 68% bottom !important;
+        background-size: auto 122% !important;
         -webkit-mask-image: none !important;
         mask-image: none !important;
     }
 
     .hero-right:hover .portrait-img {
-        transform: scale(1.4) !important;
+        transform: scale(1.58) !important;
     }
 
     .trail-img {
