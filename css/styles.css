@@ -2189,11 +2189,9 @@ html.light .theme-icon-sun { display: block; }
     }
 
     .hero-ctas {
-        position: absolute;
-        left: clamp(88px, 31vw, 138px);
-        bottom: 26px;
-        z-index: 4;
-        margin-top: 0;
+        position: relative;
+        z-index: 1;
+        margin-top: 12px;
     }
 
     .cta-mobile {
