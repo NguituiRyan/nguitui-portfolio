@@ -2154,11 +2154,12 @@ html.light .theme-icon-sun { display: block; }
     }
 
     .hero-left {
+        position: relative;
         justify-content: flex-start;
         padding: calc(20px + var(--nav-h)) 0 52px var(--pad-x);
         gap: 12px;
         border-right: none;
-        z-index: 5;
+        z-index: 3;
     }
 
     .hero-title {
@@ -2184,13 +2185,15 @@ html.light .theme-icon-sun { display: block; }
     }
 
     .scroll-hint {
-        bottom: 16px;
-        left: var(--pad-x);
-        transform: none;
+        display: none;
     }
 
     .hero-ctas {
-        margin-top: 12px;
+        position: absolute;
+        left: clamp(88px, 31vw, 138px);
+        bottom: 26px;
+        z-index: 4;
+        margin-top: 0;
     }
 
     .cta-mobile {
@@ -2217,7 +2220,8 @@ html.light .theme-icon-sun { display: block; }
     .hero-right {
         min-height: 68svh;
         overflow: visible;
-        z-index: 2;
+        z-index: 5;
+        pointer-events: none;
     }
 
 
