@@ -191,7 +191,6 @@
     var hero = document.getElementById('hero');
     if (!hero) return;
     var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0 || window.matchMedia('(pointer: coarse)').matches;
-    if (isTouch) return;
 
     var images = [
         "img/hero-cursor/1_20240801_203948_0000.png",
@@ -212,8 +211,8 @@
         "img/hero-cursor/Yellow Bold Flea Market Event Poster_20251118_225448_0000.png"
     ];
 
-    var MAX_IMAGES = 15;
-    var DISTANCE   = 25;   /* window.innerWidth / DISTANCE = min px to trigger */
+    var MAX_IMAGES = isTouch ? 10 : 15;
+    var DISTANCE   = isTouch ? 13 : 25;   /* window.innerWidth / DISTANCE = min px to trigger */
 
     var imgEls      = [];
     var globalIndex = 0;
@@ -286,10 +285,14 @@
     }
 
     hero.addEventListener('mousemove', function(e) { onMove(e.clientX, e.clientY); });
-    hero.addEventListener('touchmove', function(e) {
-        e.preventDefault();
+    hero.addEventListener('touchstart', function(e) {
+        if (!e.touches || !e.touches.length) return;
         onMove(e.touches[0].clientX, e.touches[0].clientY);
-    }, { passive: false });
+    }, { passive: true });
+    hero.addEventListener('touchmove', function(e) {
+        if (!e.touches || !e.touches.length) return;
+        onMove(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: true });
 })();
 
 

@@ -2143,33 +2143,35 @@ html.light .theme-icon-sun { display: block; }
     .cta-mobile { display: inline-flex; }
 
     .hero {
-        min-height: 65svh;
+        min-height: 68svh;
     }
 
-    /* Stack: name on top, portrait strip on bottom */
+    /* Mobile keeps the laptop hero idea: copy left, portrait right. */
     .hero-grid {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr;
-        min-height: 65svh;
+        grid-template-columns: minmax(0, 58fr) minmax(118px, 42fr);
+        grid-template-rows: 1fr;
+        min-height: 68svh;
     }
 
     .hero-left {
-        padding: calc(20px + var(--nav-h)) var(--pad-x) 20px;
-        gap: 10px;
+        justify-content: flex-start;
+        padding: calc(20px + var(--nav-h)) 0 52px var(--pad-x);
+        gap: 12px;
         border-right: none;
         z-index: 5;
     }
 
     .hero-title {
-        font-size: clamp(44px, 11vw, 64px);
-        word-break: break-word;
-        line-height: 0.95;
+        max-width: 64vw;
+        font-size: clamp(62px, 17vw, 88px);
+        line-height: 0.9;
+        letter-spacing: -0.06em;
     }
 
     .hero-tagline {
-        font-size: 14px;
-        max-width: 100%;
-        line-height: 1.5;
+        font-size: clamp(13px, 3.6vw, 15px);
+        max-width: 49vw;
+        line-height: 1.45;
         color: rgba(255, 255, 255, .75);
     }
 
@@ -2183,32 +2185,60 @@ html.light .theme-icon-sun { display: block; }
 
     .scroll-hint {
         bottom: 16px;
+        left: var(--pad-x);
+        transform: none;
     }
 
-    /* Portrait strip — horizontal slice showing upper body */
+    .hero-ctas {
+        margin-top: 12px;
+    }
+
+    .cta-mobile {
+        padding: 12px 16px 12px 12px;
+        gap: 10px;
+        font-size: 13px;
+        color: #06130a;
+        background: rgba(37, 211, 102, 0.92);
+        border-color: rgba(37, 211, 102, 0.65);
+        box-shadow: 0 10px 28px rgba(37, 211, 102, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+    }
+
+    .cta-mobile .cta-icon {
+        width: 24px;
+        height: 24px;
+    }
+
+    .cta-mobile:hover {
+        background: #25D366;
+        border-color: #25D366;
+    }
+
+    /* Portrait column: full-height fit, biased right, no face crop. */
     .hero-right {
-        height: 42svh;
-        min-height: 220px;
+        min-height: 68svh;
+        overflow: visible;
+        z-index: 2;
     }
 
 
 
     .portrait-img {
-        transform: scale(1.58) !important;
-        transform-origin: 72% bottom !important;
-        background-position: 68% bottom !important;
-        background-size: auto 122% !important;
+        inset: 0 -12vw 0 -22vw;
+        transform: scale(1.08) !important;
+        transform-origin: right bottom !important;
+        background-position: right bottom !important;
+        background-size: auto 101% !important;
         -webkit-mask-image: none !important;
         mask-image: none !important;
     }
 
     .hero-right:hover .portrait-img {
-        transform: scale(1.58) !important;
+        transform: scale(1.08) !important;
     }
 
     .trail-img {
-        width: 110px;
-        height: 138px;
+        width: 104px;
+        height: 132px;
     }
 
     .testi-item {
@@ -2254,7 +2284,7 @@ html.light .theme-icon-sun { display: block; }
     .stack-card-content { padding: 10px 14px 14px; }
 
     .work-section {
-        padding: 24px var(--pad-x) 80px;
+        padding: 18px var(--pad-x) 80px;
     }
 
     .work-head {
